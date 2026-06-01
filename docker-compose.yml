@@ -1,0 +1,47 @@
+services:
+  api:
+    build: 
+      context: ./app/api
+
+    container_name: financeiro_api
+
+    ports: 
+      - "3000:3000"
+
+    volumes:
+      - ./app/api:/app
+      - /app/node_modules
+
+    environment:
+      PORT: 3000
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: financeiro_postgres
+
+    restart: always
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: financeiro
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+volumes:
+  postgres_data:
+  
