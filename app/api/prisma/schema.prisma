@@ -14,5 +14,49 @@ model User {
     password String
     createdAt DateTime @default(now())
 
+    categories Category[]
+    transactions Transaction[]
+
     @@map("users")
+}
+
+model Category {
+    id String @id @default(uuid())
+    name String
+    type CategoryType
+    userId String
+    createdAt DateTime @default(now())
+
+    user User @relation(fields: [userId], references: [id])
+
+    transactions Transaction[]
+
+    @@map("categories")
+}
+
+model Transaction {
+    id String @id @default(uuid())
+    amount Float
+    date DateTime
+    description String
+    type TransactionType
+    categoryId String
+    userId String
+    createdAt DateTime @default(now())
+
+    category Category @relation(fields: [categoryId], references: [id])
+    user User @relation(fields: [userId], references: [id])
+
+
+    @@map("transactions")
+}
+
+enum CategoryType {
+    INCOME
+    EXPENSE
+}
+
+enum TransactionType {
+    INCOME
+    EXPENSE
 }
