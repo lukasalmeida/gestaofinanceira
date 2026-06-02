@@ -9,6 +9,8 @@ router.use(authMiddleware);
 
 router.post("/", controller.create);
 router.get("/", controller.findAll);
+router.get('/summary', authMiddleware, controller.summary);
+
 router.get("/:id", controller.findById);
 
 module.exports = router;

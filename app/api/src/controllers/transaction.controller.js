@@ -3,14 +3,15 @@ const service = require("../services/transaction.service");
 async function create(req, res) {
   try {
     const userId = req.user.id;
-    const { description, amount, type, categoryId } = req.body;
+    const { description, amount, type, categoryId, date } = req.body;
 
     const transaction = await service.create({
       description,
       amount,
       type,
       categoryId,
-      userId
+      userId,
+      date
     });
 
     return res.json(transaction);
@@ -56,8 +57,23 @@ async function findById(req, res) {
   }
 }
 
+async function summary(req, res) {
+    try {
+        const userId = req.user.id;
+
+        const result = await service.getSummary(userId);
+
+        return res.json(result);
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message,
+        });
+    }
+}
+
 module.exports = {
   create,
   findAll,
-  findById
+  findById,
+  summary
 };

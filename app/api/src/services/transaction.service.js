@@ -12,8 +12,18 @@ async function findById(id, userId) {
   return repository.findById(id, userId);
 }
 
+async function getSummary(userId) {
+    const summary = await repository.getSummary(userId);
+
+    return {
+        ...summary,
+        balance: summary.income - summary.expense,
+    };
+}
+
 module.exports = {
   create,
   findAll,
-  findById
+  findById,
+  getSummary
 };
