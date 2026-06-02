@@ -23,17 +23,27 @@ async function create(req, res) {
 }
 
 async function findAll(req, res) {
-  try {
-    const userId = req.user.id;
+    try {
+        const userId = req.user.id;
 
-    const transactions = await service.findAll(userId);
+        const {
+            startDate,
+            endDate
+        } = req.query;
 
-    return res.json(transactions);
-  } catch (error) {
-    return res.status(400).json({
-      message: error.message
-    });
-  }
+        const transactions = await service.findAll(
+            userId,
+            startDate,
+            endDate
+        );
+
+        return res.json(transactions);
+
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message
+        });
+    }
 }
 
 async function findById(req, res) {
@@ -45,7 +55,7 @@ async function findById(req, res) {
 
     if (!transaction) {
       return res.status(404).json({
-        message: "Transaction não encontrada"
+        message: "Transação não encontrada"
       });
     }
 

@@ -4,8 +4,16 @@ async function create(data) {
   return repository.create(data);
 }
 
-async function findAll(userId) {
-  return repository.findAllByUser(userId);
+async function findAll(
+    userId,
+    startDate,
+    endDate
+) {
+    return repository.findAllByUser(
+        userId,
+        startDate,
+        endDate
+    );
 }
 
 async function findById(id, userId) {

@@ -9,16 +9,30 @@ async function create(data) {
     });
 }
 
-async function findAllByUser(userId) {
+async function findAllByUser(
+    userId,
+    startDate,
+    endDate
+) {
+
+    const where = {
+        userId,
+    };
+
+    if (startDate && endDate) {
+        where.date = {
+            gte: new Date(startDate),
+            lte: new Date(endDate),
+        };
+    }
+
     return prisma.transaction.findMany({
-        where: {
-            userId,
-        },
+        where,
         include: {
             category: true,
         },
         orderBy: {
-            createdAt: 'desc',
+            date: 'desc',
         },
     });
 }
