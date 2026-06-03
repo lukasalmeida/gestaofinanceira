@@ -12,5 +12,7 @@ router.get("/", controller.findAll);
 router.get('/summary', authMiddleware, controller.summary);
 
 router.get("/:id", controller.findById);
+router.put("/:id", controller.update);
+router.delete("/:id", controller.remove);
 
 module.exports = router;

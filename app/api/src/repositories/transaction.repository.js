@@ -76,9 +76,31 @@ async function getSummary(userId) {
     }
 }
 
+async function update(id, data) {
+    return prisma.transaction.update({
+        where: {
+            id,
+        },
+        data,
+        include: {
+            category: true,
+        },
+    });
+}
+
+async function remove(id) {
+    return prisma.transaction.delete({
+        where: {
+            id,
+        },
+    });
+}
+
 module.exports = {
     create,
     findAllByUser,
     findById,
-    getSummary
+    getSummary,
+    update,
+    remove
 };

@@ -29,9 +29,31 @@ async function getSummary(userId) {
     };
 }
 
+async function update(id, userId, data) {
+    const transaction = await repository.findById(id, userId);
+
+    if (!transaction) {
+        throw new Error("Transação não encontrada");
+    }
+    return repository.update(id, data);
+}
+
+async function remove(id, userId) {
+    const transaction = await repository.findById(id, userId);
+
+    if (!transaction) {
+        throw new Error("Transação não encontrada");
+    }
+    await repository.remove(id);
+
+    return true;
+}
+
 module.exports = {
   create,
   findAll,
   findById,
-  getSummary
+  getSummary,
+  update,
+  remove
 };

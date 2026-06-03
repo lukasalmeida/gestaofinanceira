@@ -81,9 +81,51 @@ async function summary(req, res) {
     }
 }
 
+async function update(req, res) {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const { description, amount, type, categoryId, date } = req.body;
+
+    const transaction = await service.update(id, userId, {
+      description,
+      amount,
+      type,
+      categoryId,
+      date
+    });
+
+    return res.json(transaction);
+
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+}
+
+async function remove(req, res) {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    await service.remove(id, userId);
+
+    return res.json({
+      message: "Transação removida com sucesso",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+}
+
 module.exports = {
   create,
   findAll,
   findById,
-  summary
+  summary,
+  update,
+  remove
 };
