@@ -20,7 +20,17 @@ async function getUsers() {
     return userRepository.findAll();
 }
 
+async function updateUser(id, data) {
+    const user = await userRepository.findById(id);
+    if (!user) {
+        throw new Error('Usuário não encontrado!');
+    }
+
+    return userRepository.updateUser(id, data);
+}
+
 module.exports = {
     createUser,
     getUsers,
+    updateUser
 };

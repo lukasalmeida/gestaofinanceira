@@ -34,8 +34,39 @@ async function findByEmail(email) {
     });
 }
 
+async function findById(id) {
+    return prisma.user.findUnique({
+        where: {
+            id
+        },
+        select: {
+            id: true,
+            email: true,
+            name: true,
+            createdAt: true
+        }
+    });
+}
+
+async function updateUser(id, data) {
+    return prisma.user.update({
+        where: {
+            id
+        },
+        data,
+        select: {
+            id: true,
+            email: true,
+            name: true,
+            createdAt: true
+        }
+    });
+}   
+
 module.exports = {
     create,
     findAll,
-    findByEmail
+    findByEmail,
+    findById,
+    updateUser
 };
