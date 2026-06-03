@@ -1,7 +1,12 @@
 const service = require('../services/category.service');
 
+const { createCategorySchema } = require('../validations/category.validation')
+
+const { ZodError } = require("zod")
+
 async function create(req, res) {
     try {
+        createCategorySchema.parse(req.body) 
         const userId = req.user.id;
         const {name, type} = req.body;
 
@@ -13,6 +18,11 @@ async function create(req, res) {
 
         return res.json(category);
     } catch (error) {
+        if (error instanceof ZodError) {
+            return res.status(400).json({
+                errors: error.issues
+            })
+        }
         return res.status(400).json({message: error.message});
     }
 }
