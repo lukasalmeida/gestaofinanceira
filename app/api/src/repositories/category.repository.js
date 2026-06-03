@@ -25,8 +25,27 @@ async function findById(id, userId) {
     });
 }
 
+async function update(id, data) {
+    return prisma.category.update({
+        where: {
+            id,
+        },
+        data,
+    });
+}
+
+async function remove(id) {
+    return prisma.category.delete({
+        where: {
+            id,
+        },
+    });
+}
+
 module.exports = {
     create,
     findAllByUser,
     findById,
+    update,
+    remove
 };
