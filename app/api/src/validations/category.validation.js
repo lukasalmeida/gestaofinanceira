@@ -15,6 +15,23 @@ const createCategorySchema = z.object({
         )
 });
 
+const updateCategorySchema = z.object({
+    name: z
+        .string()
+        .min(4)
+        .optional(),
+
+    type: z
+        .enum(
+            [
+                'INCOME',
+                'EXPENSE'
+            ]
+        )
+        .optional()
+})
+
 module.exports = {
-    createCategorySchema
+    createCategorySchema,
+    updateCategorySchema
 }

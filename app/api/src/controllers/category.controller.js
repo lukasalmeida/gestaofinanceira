@@ -1,6 +1,7 @@
 const service = require('../services/category.service');
 
 const { createCategorySchema } = require('../validations/category.validation')
+const { updateCategorySchema } = require('../validations/category.validation')
 
 const { ZodError } = require("zod")
 
@@ -60,6 +61,7 @@ async function findById(req, res) {
 
 async function update(req, res) {
     try {
+        updateCategorySchema.parse(req.body) 
         const userId = req.user.id;
         const { id } = req.params;
         const { name, type } = req.body;
@@ -77,6 +79,11 @@ async function update(req, res) {
 
         return res.json(category);
     } catch (error) {
+        if (error instanceof ZodError) {
+            return res.status(400).json({
+                errors: error.issues
+            })
+        }
         return res.status(400).json({message: error.message});
     }   
 }
