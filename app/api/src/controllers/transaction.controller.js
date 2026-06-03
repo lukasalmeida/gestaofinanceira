@@ -1,7 +1,11 @@
 const service = require("../services/transaction.service");
+const { createTransactionSchema } = require("../validations/transaction.validation");
+const { updateTransactionSchema } = require("../validations/transaction.validation");
+const { ZodError } = require("zod");
 
 async function create(req, res) {
   try {
+    createTransactionSchema.parse(req.body);
     const userId = req.user.id;
     const { description, amount, type, categoryId, date } = req.body;
 
@@ -16,6 +20,13 @@ async function create(req, res) {
 
     return res.json(transaction);
   } catch (error) {
+
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        errors: error.issues
+      });
+    }
+    
     return res.status(400).json({
       message: error.message
     });
@@ -83,6 +94,7 @@ async function summary(req, res) {
 
 async function update(req, res) {
   try {
+    updateTransactionSchema.parse(req.body);
     const { id } = req.params;
     const userId = req.user.id;
     const { description, amount, type, categoryId, date } = req.body;
@@ -135,7 +147,7 @@ async function categorySummary(req, res) {
 }
 
 module.exports = {
-  create,
+  create, 
   findAll,
   findById,
   summary,
