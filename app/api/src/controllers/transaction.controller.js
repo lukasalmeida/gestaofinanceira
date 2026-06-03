@@ -121,11 +121,25 @@ async function remove(req, res) {
   }
 }
 
+async function categorySummary(req, res) {
+  try {
+    const userId = req.user.id;
+    const result = await service.getCategorySummary(userId);
+
+    return res.json(result);
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+}
+
 module.exports = {
   create,
   findAll,
   findById,
   summary,
   update,
-  remove
+  remove,
+  categorySummary
 };

@@ -49,11 +49,16 @@ async function remove(id, userId) {
     return true;
 }
 
+async function getCategorySummary(userId) {
+    return repository.getCategorySummary(userId);
+}
+
 module.exports = {
   create,
   findAll,
   findById,
   getSummary,
   update,
-  remove
+  remove,
+  getCategorySummary
 };

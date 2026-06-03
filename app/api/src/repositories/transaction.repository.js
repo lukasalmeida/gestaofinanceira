@@ -96,11 +96,48 @@ async function remove(id) {
     });
 }
 
+async function getCategorySummary(userId) {
+    const transactions = await prisma.transaction.groupBy({
+       by: ['categoryId'],
+       
+       where: {
+        userId,
+       },
+       _sum: {
+            amount: true,
+       },
+    });
+
+    const categories = await prisma.category.findMany({
+        where: {
+            id: {
+                in: transactions.map(
+                    item => item.categoryId
+                ),
+            }
+        },
+    });
+
+    return transactions.map(transaction => {
+        const category = categories.find(
+            c => c.id === transaction.categoryId
+        );
+
+        return {
+            category: category?.name,
+            type: category?.type,
+            total: transaction._sum.amount || 0,
+        };
+    });
+
+}
+
 module.exports = {
     create,
     findAllByUser,
     findById,
     getSummary,
     update,
-    remove
+    remove,
+    getCategorySummary,
 };
