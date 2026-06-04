@@ -420,3 +420,16 @@ body {
         scroll-behavior: auto !important;
     }
 }
+
+
+.rodape {
+    text-align: center;
+    font-size: 9pt;
+    margin-top: 50px;
+    color: #374151;
+}
+
+a.rodapeA {
+    text-decoration: none;
+    color: #493c35;
+}

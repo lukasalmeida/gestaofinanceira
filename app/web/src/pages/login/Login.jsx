@@ -112,7 +112,7 @@ export default function Login() {
                 <span>Status da API ⋮ <b> {apiStatus}</b></span>
             </div>
 
-            <footer>{APP_CONFIG.name} <br /> Desenvolvido por: {APP_CONFIG.company} ({APP_CONFIG.author}) </footer>
+            <footer className="rodape"><a className="rodapeA" href={APP_CONFIG.gitHubProject}>{APP_CONFIG.name}</a> | v.{APP_CONFIG.version} <br /> Desenvolvido por: <a href={APP_CONFIG.gitHubAuthor} className="rodapeA">{APP_CONFIG.company}</a> (<a href={APP_CONFIG.linkedIn} className="rodapeA">{APP_CONFIG.author}</a>) </footer>
 
             <div className="success-message" id="successMessage">
                 <div className="success-icon">
