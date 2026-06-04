@@ -88,3 +88,90 @@
 
   cursor: pointer;
 }
+
+.table-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+
+  margin: 24px 0;
+  padding: 16px;
+
+  background: var(--card-bg);
+  border-radius: 16px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+}
+
+.table-filters select,
+.table-filters input {
+  min-width: 180px;
+
+  padding: 10px 14px;
+
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+
+  background: var(--card-bg);
+  color: var(--primary);
+
+  font-size: 14px;
+
+  transition: .2s;
+}
+
+.table-filters select:focus,
+.table-filters input:focus {
+  outline: none;
+
+  border-color: #e94e07;
+
+  box-shadow: 0 0 0 3px rgba(233, 78, 7, .15);
+}
+
+.clear-filter-btn {
+  height: 42px;
+
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  background: #e94e07;
+  color: white;
+
+  font-weight: 600;
+
+  transition: .2s;
+}
+
+.clear-filter-btn:hover {
+  transform: translateY(-2px);
+
+  background: #d84600;
+}
+
+.clear-filter-btn:active {
+  transform: translateY(0);
+}
+.clear-filter-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .table-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .table-filters select,
+  .table-filters input,
+  .clear-filter-btn {
+    width: 100%;
+  }
+}

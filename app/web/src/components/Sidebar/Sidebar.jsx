@@ -6,11 +6,20 @@ import {
   MdLogout
 } from "react-icons/md";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./Sidebar.css";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Sidebar() {
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    signOut();
+    navigate("/login");
+  }
+
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
@@ -39,7 +48,10 @@ export default function Sidebar() {
         </Link>
       </nav>
 
-      <button className="logout-btn">
+      <button
+        className="logout-btn"
+        onClick={handleLogout}
+      >
         <MdLogout />
         Sair
       </button>

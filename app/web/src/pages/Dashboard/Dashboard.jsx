@@ -131,6 +131,28 @@ export default function Dashboard() {
     }
   }
 
+  const [typeFilter, setTypeFilter] = useState("ALL");
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const filteredTransactions = safeTransactions.filter((t) => {
+    const matchType =
+      typeFilter === "ALL" ? true : t.type === typeFilter;
+
+    const transactionDate = new Date(t.date || t.createdAt);
+
+    const matchStartDate = startDate
+      ? transactionDate >= new Date(startDate)
+      : true;
+
+    const matchEndDate = endDate
+      ? transactionDate <= new Date(endDate)
+      : true;
+
+    return matchType && matchStartDate && matchEndDate;
+  });
+
   return (
     <MainLayout>
       <div className="dashboard-cards">
@@ -174,7 +196,46 @@ export default function Dashboard() {
         </button>
       </div>
 
-      <Table data={transactions} />
+      <div className="table-filters">
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+        >
+          <option value="ALL">Todos</option>
+          <option value="INCOME">Receitas</option>
+          <option value="EXPENSE">Despesas</option>
+        </select>
+
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+
+        <button
+          className="clear-filter-btn"
+          disabled={
+            typeFilter === "ALL" &&
+            !startDate &&
+            !endDate
+          }
+          onClick={() => {
+            setTypeFilter("ALL");
+            setStartDate("");
+            setEndDate("");
+          }}
+        >
+          Limpar Filtros
+        </button>
+      </div>
+
+      <Table data={filteredTransactions} />
 
 
       <Modal
