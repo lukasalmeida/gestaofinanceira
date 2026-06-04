@@ -1,0 +1,24 @@
+.header {
+  height: 72px;
+
+  background: var(--surface);
+
+  border-bottom: 1px solid var(--border);
+
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-info span {
+  color: var(--text-secondary);
+  font-size: .85rem;
+}

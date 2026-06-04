@@ -1,0 +1,48 @@
+import {
+  MdDashboard,
+  MdCategory,
+  MdPayments,
+  MdPeople,
+  MdLogout
+} from "react-icons/md";
+
+import { Link } from "react-router-dom";
+
+import "./Sidebar.css";
+
+export default function Sidebar() {
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-logo">
+        Gestão Financeira
+      </div>
+
+      <nav>
+        <Link to="/">
+          <MdDashboard />
+          Dashboard
+        </Link>
+
+        <Link to="/categories">
+          <MdCategory />
+          Categorias
+        </Link>
+
+        <Link to="/transactions">
+          <MdPayments />
+          Transações
+        </Link>
+
+        <Link to="/users">
+          <MdPeople />
+          Usuários
+        </Link>
+      </nav>
+
+      <button className="logout-btn">
+        <MdLogout />
+        Sair
+      </button>
+    </aside>
+  );
+}
