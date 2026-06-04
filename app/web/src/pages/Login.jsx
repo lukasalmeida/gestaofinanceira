@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
 import { useAuth } from "../contexts/AuthContext";
 
+import { Navigate } from "react-router-dom";
+
 export default function Login() {
   const navigate = useNavigate();
 
@@ -11,6 +13,11 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { isAuthenticated } = useAuth();
+  if(isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
