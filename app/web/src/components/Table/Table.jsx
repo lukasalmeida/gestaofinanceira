@@ -27,16 +27,22 @@ export default function Table({ data = [] }) {
             data.map((item) => (
               <tr key={item.id}>
                 <td>{item.description}</td>
-                <td>{item.category}</td>
+
+                <td>{item.category?.name}</td>
+
                 <td>
                   <span className={`type ${item.type}`}>
                     {item.type === "income" ? "Receita" : "Despesa"}
                   </span>
                 </td>
+
                 <td className={item.type}>
                   {item.type === "income" ? "+" : "-"} R$ {item.amount}
                 </td>
-                <td>{item.date}</td>
+
+                <td>
+                  {new Date(item.createdAt).toLocaleString("pt-BR")}
+                </td>
               </tr>
             ))
           )}

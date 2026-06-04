@@ -4,10 +4,12 @@ import Card from "../../components/Card/Card";
 
 import './Dashboard.css'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Modal from "../../components/Modal/Modal"
 
 import Table from "../../components/Table/Table";
+
+import { getTransactions, createTransaction } from "../../services/transactionService";
 
 import {
   MdTrendingUp,
@@ -18,52 +20,81 @@ import {
 
 export default function Dashboard() {
   const [incomeModalOpen, setIncomeModalOpen] = useState(false);
-
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
 
-  const transactions = [
-    {
-      id: 1,
-      description: "Supermercado",
-      category: "Alimentação",
-      type: "expense",
-      amount: 120,
-      date: "04/06"
-    },
-    {
-      id: 2,
-      description: "Salário",
-      category: "Trabalho",
-      type: "income",
-      amount: 5000,
-      date: "01/06"
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadTransactions();
+  }, []);
+
+  async function loadTransactions() {
+    try {
+      const data = await getTransactions();
+      setTransactions(data.transactions || data || []);
+    } finally {
+      setLoading(false);
     }
-  ];
+  }
+
+  async function handleCreateTransaction(type, data) {
+    await createTransaction({
+      type,
+      ...data
+    });
+
+    await loadTransactions();
+
+    setIncomeModalOpen(false);
+    setExpenseModalOpen(false);
+  }
+
+  const safeTransactions = Array.isArray(transactions)
+    ? transactions
+    : [];
+
+  const income = safeTransactions
+    .filter((t) => t.type === "INCOME")
+    .reduce((acc, t) => acc + Number(t.amount || 0), 0);
+
+  const expense = safeTransactions
+    .filter((t) => t.type === "EXPENSE")
+    .reduce((acc, t) => acc + Number(t.amount || 0), 0);
+
+  const balance = income - expense;
+
+  const categoriesCount = new Set(
+    safeTransactions
+      .map((t) => t.category?.name)
+      .filter(Boolean)
+  ).size;
+
 
   return (
     <MainLayout>
       <div className="dashboard-cards">
         <Card
           title="Receitas"
-          value="R$ 0,00"
+          value={`R$ ${income.toFixed(2)}`}
           icon={<MdTrendingUp />}
         />
 
         <Card
           title="Despesas"
-          value="R$ 0,00"
+          value={`R$ ${expense.toFixed(2)}`}
           icon={<MdTrendingDown />}
         />
 
         <Card
           title="Saldo"
-          value="R$ 0,00"
+          value={`R$ ${balance.toFixed(2)}`}
           icon={<MdAccountBalanceWallet />}
         />
 
         <Card
           title="Categorias"
-          value="0"
+          value={categoriesCount}
           icon={<MdCategory />}
         />
       </div>
