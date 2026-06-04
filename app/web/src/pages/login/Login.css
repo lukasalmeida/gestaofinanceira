@@ -275,8 +275,8 @@ body {
     opacity: 1;
 }
 
-/* Security Notice */
-.security-notice {
+/* Security Notice - Online */
+.security-notice-online {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -287,8 +287,26 @@ body {
     margin-bottom: 16px;
 }
 
-.security-notice span {
+.security-notice-online span {
     color: #166534;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Security Notice - Offline */
+.security-notice-offline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #fdf0f0;
+    border: 1px solid #f7bbbb;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.security-notice-offline span {
+    color: #651616;
     font-size: 12px;
     font-weight: 500;
 }

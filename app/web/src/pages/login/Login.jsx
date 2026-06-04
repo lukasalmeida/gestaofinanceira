@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { login } from "../../services/authService";
@@ -10,13 +11,42 @@ import { logo } from "../../assets/"
 
 import "./Login.css"
 
+import { getApiHealth } from "../../services/healthService";
+
+import { APP_CONFIG } from "../../config/app";
+
 export default function Login() {
+
   const navigate = useNavigate();
 
   const { signIn } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [apiStatus, setApiStatus] = useState("Verificando...");
+  const [apiColors, setApiColors] = useState("security-notice")
+
+  useEffect(() => {
+    const checkHealth = async () => {
+    const start = performance.now();
+
+    try {
+        await getApiHealth();
+
+        const latency = Math.round(performance.now() - start);
+
+        setApiStatus(`🟢 Online (${latency}ms)`);
+        setApiColors("security-notice-online");
+    } catch {
+        setApiStatus("❌ Offline");
+        setApiColors("security-notice-offline");
+
+    }
+  };
+
+    checkHealth();
+  }, []);
 
   const { isAuthenticated } = useAuth();
   if(isAuthenticated) {
@@ -71,20 +101,18 @@ export default function Login() {
                 </div> */}
 
                 <button type="submit" className="login-btn">
-                    <span className="btn-text">Entrar</span>
+                    <span className="btn-text">➜] Entrar</span>
                     <div className="btn-loader">
                         <div className="spinner"></div>
                     </div>
                 </button>
             </form>
 
-            <div className="security-notice">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 1L3 3v4.5c0 2.89 2 5.5 5 6 3-0.5 5-3.11 5-6V3l-5-2z" stroke="#10B981" stroke-width="1.5" fill="none"/>
-                    <path d="M6 8l1.5 1.5L11 6" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Your connection is secured with 256-bit SSL encryption</span>
+            <div className={apiColors}>
+                <span>Status da API ⋮ <b> {apiStatus}</b></span>
             </div>
+
+            <footer>{APP_CONFIG.name} <br /> Desenvolvido por: {APP_CONFIG.company} ({APP_CONFIG.author}) </footer>
 
             <div className="success-message" id="successMessage">
                 <div className="success-icon">
