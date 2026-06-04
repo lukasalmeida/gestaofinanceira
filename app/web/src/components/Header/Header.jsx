@@ -1,12 +1,9 @@
 import { useAuth } from "../../contexts/AuthContext";
-
 import "./Header.css";
-
 import {
   MdDarkMode,
   MdLightMode
 } from "react-icons/md";
-
 import { useTheme } from "../../contexts/ThemeContext";
 
 
@@ -22,16 +19,17 @@ export default function Header() {
         <strong>{user?.name}</strong>
         <span>{user?.email}</span>
       </div>
-      <button
-        onClick={toggleTheme}
-        className="theme-btn"
-      >
-        {
-          theme === "dark"
-            ? <MdLightMode />
-            : <MdDarkMode />
-        }
-      </button>
+      <div className="theme-switch" onClick={toggleTheme}>
+        <div className={`switch ${theme}`}>
+          <div className="thumb">
+            {theme === "dark" ? (
+              <MdDarkMode />
+            ) : (
+              <MdLightMode />
+            )}
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

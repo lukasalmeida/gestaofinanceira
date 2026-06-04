@@ -31,6 +31,7 @@
 
   border-radius: 12px;
   margin-right: 10px;
+  margin-top: 15px;
 
   cursor: pointer;
 }
@@ -44,6 +45,8 @@
   padding: 12px 20px;
 
   border-radius: 12px;
+  margin-top: 15px;
+
 
   cursor: pointer;
 }

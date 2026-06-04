@@ -8,22 +8,14 @@ export function ThemeProvider({ children }) {
   );
 
   useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      theme
-    );
+    document.documentElement.setAttribute("data-theme", theme);
 
-    localStorage.setItem(
-      "@finance:theme",
-      theme
-    );
+    localStorage.setItem("@finance:theme", theme);
   }, [theme]);
 
   function toggleTheme() {
     setTheme((prev) =>
-      prev === "light"
-        ? "dark"
-        : "light"
+      prev === "light" ? "dark" : "light"
     );
   }
 

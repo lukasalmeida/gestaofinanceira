@@ -7,6 +7,8 @@ import './Dashboard.css'
 import { useState } from "react"
 import Modal from "../../components/Modal/Modal"
 
+import Table from "../../components/Table/Table";
+
 import {
   MdTrendingUp,
   MdTrendingDown,
@@ -18,6 +20,26 @@ export default function Dashboard() {
   const [incomeModalOpen, setIncomeModalOpen] = useState(false);
 
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
+
+  const transactions = [
+    {
+      id: 1,
+      description: "Supermercado",
+      category: "Alimentação",
+      type: "expense",
+      amount: 120,
+      date: "04/06"
+    },
+    {
+      id: 2,
+      description: "Salário",
+      category: "Trabalho",
+      type: "income",
+      amount: 5000,
+      date: "01/06"
+    }
+  ];
+
   return (
     <MainLayout>
       <div className="dashboard-cards">
@@ -60,6 +82,8 @@ export default function Dashboard() {
           - Despesa
         </button>
       </div>
+
+      <Table data={transactions} />
 
 
       <Modal

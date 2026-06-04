@@ -22,3 +22,53 @@
   color: var(--text-secondary);
   font-size: .85rem;
 }
+
+.theme-switch {
+  cursor: pointer;
+}
+
+.switch {
+  width: 52px;
+  height: 28px;
+
+  background: var(--border);
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 3px;
+
+  transition: .3s ease;
+}
+
+.switch.dark {
+  background: var(--primary);
+}
+
+.thumb {
+  width: 22px;
+  height: 22px;
+
+  background: white;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--primary);
+
+  transition: .3s ease;
+}
+
+/* movimento do toggle */
+.switch.light .thumb {
+  transform: translateX(0);
+}
+
+.switch.dark .thumb {
+  transform: translateX(24px);
+}
