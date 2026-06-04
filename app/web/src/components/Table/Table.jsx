@@ -32,12 +32,12 @@ export default function Table({ data = [] }) {
 
                 <td>
                   <span className={`type ${item.type}`}>
-                    {item.type === "income" ? "Receita" : "Despesa"}
+                    {item.type === "INCOME" ? "Receita" : "Despesa"}
                   </span>
                 </td>
 
                 <td className={item.type}>
-                  {item.type === "income" ? "+" : "-"} R$ {item.amount}
+                  {item.type === "INCOME" ? "+" : "-"} R$ {item.amount}
                 </td>
 
                 <td>

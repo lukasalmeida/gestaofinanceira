@@ -58,12 +58,12 @@ tr:hover {
   font-size: 0.85rem;
 }
 
-.type.income {
+.type.INCOME {
   background: rgba(34, 197, 94, 0.15);
   color: #16a34a;
 }
 
-.type.expense {
+.type.EXPENSE {
   background: rgba(239, 68, 68, 0.15);
   color: #dc2626;
 }

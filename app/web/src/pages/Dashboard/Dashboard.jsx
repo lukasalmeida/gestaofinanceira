@@ -10,6 +10,7 @@ import Modal from "../../components/Modal/Modal"
 import Table from "../../components/Table/Table";
 
 import { getTransactions, createTransaction } from "../../services/transactionService";
+import { getCategories } from "../../services/categoryService"
 
 import {
   MdTrendingUp,
@@ -70,6 +71,65 @@ export default function Dashboard() {
       .filter(Boolean)
   ).size;
 
+  const [incomeForm, setIncomeForm] = useState({
+    categoryId: "",
+    amount: "",
+    description: ""
+  });
+
+  const [expenseForm, setExpenseForm] = useState({
+    categoryId: "",
+    amount: "",
+    description: ""
+  });
+
+  async function handleSubmitIncome(e) {
+    e.preventDefault();
+
+    await handleCreateTransaction("INCOME", {
+      ...incomeForm,
+      amount: Number(incomeForm.amount),
+      date: new Date().toISOString()
+    });
+
+    setIncomeForm({
+      categoryId: "",
+      amount: "",
+      description: ""
+    });
+  }
+
+  async function handleSubmitExpense(e) {
+    e.preventDefault();
+
+    await handleCreateTransaction("EXPENSE", {
+      ...expenseForm,
+      amount: Number(expenseForm.amount),
+      date: new Date().toISOString()
+    });
+
+    setExpenseForm({
+      categoryId: "",
+      amount: "",
+      description: ""
+    });
+  }
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    loadTransactions();
+    loadCategories();
+  }, []);
+
+  async function loadCategories() {
+    try {
+      const data = await getCategories();
+      setCategories(data.categories || data || []);
+    } catch (err) {
+      console.error("Erro ao carregar categorias", err);
+    }
+  }
 
   return (
     <MainLayout>
@@ -122,12 +182,23 @@ export default function Dashboard() {
         title="Nova Receita"
         onClose={() => setIncomeModalOpen(false)}
       >
-        <form>
+        <form onSubmit={handleSubmitIncome}>
           <div className="form-group">
             <label>Categoria</label>
 
-            <select>
-              <option>Selecione</option>
+            <select
+              value={incomeForm.categoryId}
+              onChange={(e) =>
+                setIncomeForm({ ...incomeForm, categoryId: e.target.value })
+              }
+            >
+              <option value="">Selecione</option>
+
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -136,7 +207,10 @@ export default function Dashboard() {
 
             <input
               type="number"
-              placeholder="0,00"
+              value={incomeForm.amount}
+              onChange={(e) =>
+                setIncomeForm({ ...incomeForm, amount: e.target.value })
+              }
             />
           </div>
 
@@ -145,7 +219,10 @@ export default function Dashboard() {
 
             <input
               type="text"
-              placeholder="Descrição"
+              value={incomeForm.description}
+              onChange={(e) =>
+                setIncomeForm({ ...incomeForm, description: e.target.value })
+              }
             />
           </div>
 
@@ -160,12 +237,23 @@ export default function Dashboard() {
         title="Nova Despesa"
         onClose={() => setExpenseModalOpen(false)}
       >
-        <form>
+        <form onSubmit={handleSubmitExpense}>
           <div className="form-group">
             <label>Categoria</label>
 
-            <select>
-              <option>Selecione</option>
+            <select
+              value={expenseForm.categoryId}
+              onChange={(e) =>
+                setExpenseForm({ ...expenseForm, categoryId: e.target.value })
+              }
+            >
+              <option value="">Selecione</option>
+
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -174,7 +262,11 @@ export default function Dashboard() {
 
             <input
               type="number"
-              placeholder="0,00"
+              value={expenseForm.amount}
+              onChange={(e) =>
+                setExpenseForm({ ...expenseForm, amount: e.target.value })
+              }
+              placeholder="0.00"
             />
           </div>
 
@@ -183,6 +275,10 @@ export default function Dashboard() {
 
             <input
               type="text"
+              value={expenseForm.description}
+              onChange={(e) =>
+                setExpenseForm({ ...expenseForm, description: e.target.value })
+              }
               placeholder="Descrição"
             />
           </div>
