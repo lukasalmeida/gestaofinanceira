@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Login from "../pages/Login"
+import Login from "../pages/login/Login"
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../pages/Dashboard";
 import Categories from "../pages/Categories";
