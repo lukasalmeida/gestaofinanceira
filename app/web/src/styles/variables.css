@@ -3,23 +3,23 @@
   --primary-dark: #c64000;
   --primary-light: #fff3ec;
 
-  --success: #22c55e;
-  --danger: #ef4444;
-  --warning: #f59e0b;
-
   --background: #f8fafc;
   --surface: #ffffff;
-
-  --border: #e5e7eb;
 
   --text: #111827;
   --text-secondary: #6b7280;
 
-  --sidebar-width: 260px;
+  --border: #e5e7eb;
+}
 
-  --radius: 16px;
+[data-theme="dark"] {
+  --background: #111827;
+  --surface: #1f2937;
 
-  --shadow:
-    0 1px 3px rgba(0,0,0,.05),
-    0 8px 24px rgba(0,0,0,.05);
+  --text: #f9fafb;
+  --text-secondary: #9ca3af;
+
+  --border: #374151;
+
+  --primary-light: rgba(233, 78, 7, .15);
 }
