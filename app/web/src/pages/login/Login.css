@@ -1,4 +1,4 @@
-/* Clean Banking Login Form - Complete & Self-Contained */
+/* Clean Banking Login Form - Theme Responsive */
 
 * {
     margin: 0;
@@ -8,13 +8,14 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: linear-gradient(135deg, var(--bg-color-primary) 0%, var(--bg-color-secondary) 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
     line-height: 1.6;
+    transition: background 0.3s ease;
 }
 
 .login-container {
@@ -23,12 +24,13 @@ body {
 }
 
 .login-card {
-    background: #ffffff;
+    background: var(--card-bg);
     border-radius: 16px;
     padding: 40px 32px 32px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--border-color);
     position: relative;
+    transition: all 0.3s ease;
 }
 
 .login-header {
@@ -43,17 +45,19 @@ body {
 }
 
 .login-header h1 {
-    color: #bc5021;
+    color: var(--primary);
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 6px;
     letter-spacing: -0.025em;
+    transition: color 0.3s ease;
 }
 
 .login-header p {
-    color: #64748b;
+    color: var(--text-secondary);
     font-size: 14px;
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 /* Form Styles */
@@ -66,17 +70,18 @@ body {
     display: block;
     font-size: 13px;
     font-weight: 600;
-    color: #374151;
+    color: var(--text-primary);
     margin-bottom: 6px;
+    transition: color 0.3s ease;
 }
 
 .form-group input {
     width: 100%;
-    background: #ffffff;
-    border: 1.5px solid #e2e8f0;
+    background: var(--input-bg);
+    border: 1.5px solid var(--input-border);
     border-radius: 8px;
     padding: 12px 14px;
-    color: #bc5021;
+    color: var(--input-text);
     font-size: 15px;
     font-weight: 400;
     outline: none;
@@ -85,12 +90,13 @@ body {
 }
 
 .form-group input:focus {
-    border-color: #ed8255;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(233, 78, 7, 0.1);
 }
 
 .form-group input::placeholder {
-    color: #94a3b8;
+    color: var(--text-secondary);
+    opacity: 0.7;
 }
 
 /* Password Field */
@@ -110,17 +116,17 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    color: #64748b;
+    color: var(--text-secondary);
     padding: 6px;
     border-radius: 4px;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .password-toggle:hover {
-    color: #ed8255;
+    color: var(--primary);
 }
 
 .eye-closed {
@@ -150,8 +156,9 @@ body {
     align-items: center;
     cursor: pointer;
     font-size: 13px;
-    color: #374151;
+    color: var(--text-primary);
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 .checkbox-wrapper input[type="checkbox"] {
@@ -161,17 +168,17 @@ body {
 .checkmark {
     width: 16px;
     height: 16px;
-    border: 1.5px solid #d1d5db;
+    border: 1.5px solid var(--input-border);
     border-radius: 3px;
     margin-right: 8px;
     position: relative;
     transition: all 0.2s ease;
-    background: #ffffff;
+    background: var(--input-bg);
 }
 
 .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
-    background: #ed8255;
-    border-color: #ed8255;
+    background: var(--primary);
+    border-color: var(--primary);
 }
 
 .checkmark::after {
@@ -193,7 +200,7 @@ body {
 }
 
 .forgot-link {
-    color: #ed8255;
+    color: var(--primary);
     text-decoration: none;
     font-size: 13px;
     font-weight: 600;
@@ -201,13 +208,13 @@ body {
 }
 
 .forgot-link:hover {
-    color: #e26028;
+    color: var(--primary-dark);
 }
 
 /* Login Button */
 .login-btn {
     width: 100%;
-    background: #ed8255;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -226,21 +233,21 @@ body {
     justify-content: center;
 }
 
-.login-btn:hover {
-    background: #ef6f39;
+.login-btn:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 4px 12px rgba(233, 78, 7, 0.4);
 }
 
-.login-btn:active {
+.login-btn:active:not(:disabled) {
     transform: translateY(0);
 }
 
 .login-btn:disabled {
-    background: #9ca3af;
+    background: var(--text-secondary);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+    opacity: 0.6;
 }
 
 .btn-text {
@@ -275,45 +282,34 @@ body {
     opacity: 1;
 }
 
-/* Security Notice - Online */
-.security-notice-online {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+/* Security Notice */
+.security-notice {
     padding: 12px 16px;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
     border-radius: 8px;
     margin-bottom: 16px;
-}
-
-.security-notice-online span {
-    color: #166534;
     font-size: 12px;
     font-weight: 500;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+/* Security Notice - Online */
+.security-notice-online {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #16a34a;
 }
 
 /* Security Notice - Offline */
 .security-notice-offline {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    background: #fdf0f0;
-    border: 1px solid #f7bbbb;
-    border-radius: 8px;
-    margin-bottom: 16px;
-}
-
-.security-notice-offline span {
-    color: #651616;
-    font-size: 12px;
-    font-weight: 500;
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    color: #dc2626;
 }
 
 /* Error States */
 .error-message {
-    color: #dc2626;
+    color: var(--error);
     font-size: 12px;
     font-weight: 500;
     margin-top: 4px;
@@ -325,30 +321,21 @@ body {
 .login-footer {
     text-align: center;
     margin: 16px 0;
-    color: #64748b;
+    color: var(--text-secondary);
     font-size: 14px;
+    transition: color 0.3s ease;
 }
 
 .login-footer .link {
-    color: #ed8255;
+    color: var(--primary);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.2s ease;
 }
 
 .login-footer .link:hover {
-    color: #ef6f39;
+    color: var(--primary-dark);
     text-decoration: underline;
-}
-
-.error-message {
-    color: #dc2626;
-    font-size: 12px;
-    font-weight: 500;
-    margin-top: 4px;
-    opacity: 0;
-    transform: translateY(-2px);
-    transition: all 0.2s ease;
 }
 
 .error-message.show {
@@ -357,8 +344,8 @@ body {
 }
 
 .form-group.error input {
-    border-color: #dc2626;
-    background: #fef2f2;
+    border-color: var(--error);
+    background: var(--input-bg);
 }
 
 .form-group.error input:focus {
@@ -393,16 +380,38 @@ body {
 }
 
 .success-message h3 {
-    color: #bc5021;
+    color: var(--primary);
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 4px;
+    transition: color 0.3s ease;
 }
 
 .success-message p {
-    color: #64748b;
+    color: var(--text-secondary);
     font-size: 14px;
     font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+/* Rodapé */
+.rodape {
+    text-align: center;
+    font-size: 11px;
+    margin-top: 20px;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+a.rodapeA {
+    text-decoration: none;
+    color: var(--primary);
+    transition: color 0.3s ease;
+}
+
+a.rodapeA:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
 }
 
 /* Mobile Responsive */
@@ -425,22 +434,16 @@ body {
         align-items: flex-start;
         gap: 12px;
     }
-    
-    .security-notice {
-        flex-direction: column;
-        text-align: center;
-        gap: 6px;
-    }
 }
+
 /* === Accessibility: keyboard focus indicators === */
-/* Restores visible focus rings for keyboard users without affecting mouse interaction. */
 :focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid var(--primary);
     outline-offset: 2px;
     border-radius: 4px;
 }
 
-/* Reduced motion: respect user preference. Animations defined per form will tone down. */
+/* Reduced motion: respect user preference */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -448,17 +451,4 @@ body {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
-}
-
-
-.rodape {
-    text-align: center;
-    font-size: 9pt;
-    margin-top: 50px;
-    color: #374151;
-}
-
-a.rodapeA {
-    text-decoration: none;
-    color: #493c35;
 }

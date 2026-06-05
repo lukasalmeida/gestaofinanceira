@@ -5,21 +5,49 @@
 
   --background: #f8fafc;
   --surface: #ffffff;
-
+  --card-bg: #ffffff;
+  
   --text: #111827;
+  --text-primary: #111827;
   --text-secondary: #6b7280;
 
   --border: #e5e7eb;
+  --border-color: #e5e7eb;
+  
+  --input-bg: #ffffff;
+  --input-border: #e5e7eb;
+  --input-text: #111827;
+  
+  --error: #dc2626;
+  --success: #16a34a;
+  --warning: #ea580c;
+  
+  --primary-color: #e94e07;
+  --primary-color-dark: #c64000;
+  --primary-color-rgb: 233, 78, 7;
+
+  --bg-color-primary: #f8fafc;
+  --bg-color-secondary: #e2e8f0;
 }
 
 [data-theme="dark"] {
   --background: #111827;
   --surface: #1f2937;
+  --card-bg: #1f2937;
 
   --text: #f9fafb;
+  --text-primary: #f9fafb;
   --text-secondary: #9ca3af;
 
   --border: #374151;
+  --border-color: #374151;
+  
+  --input-bg: #111827;
+  --input-border: #4b5563;
+  --input-text: #f9fafb;
 
-  --primary-light: rgba(233, 78, 7, .15);
+  --primary-light: rgba(233, 78, 7, 0.15);
+  
+  --bg-color-primary: #0f172a;
+  --bg-color-secondary: #1e293b;
 }

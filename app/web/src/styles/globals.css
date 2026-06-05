@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 body {
   font-family:
     Inter,
@@ -15,8 +20,8 @@ body {
   background: var(--background);
   color: var(--text);
   min-width: 320px;
-
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 button,
@@ -27,4 +32,12 @@ input {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+/* Smooth transitions for theme changes */
+body,
+body * {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease,
+              border-color 0.3s ease;
 }
