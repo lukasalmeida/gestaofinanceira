@@ -12,6 +12,8 @@ import Table from "../../components/Table/Table";
 import { getTransactions, createTransaction } from "../../services/transactionService";
 import { getCategories } from "../../services/categoryService"
 
+import { formatCurrency, formatInputCurrency } from "../../utils/currency";
+
 import {
   MdTrendingUp,
   MdTrendingDown,
@@ -158,19 +160,19 @@ export default function Dashboard() {
       <div className="dashboard-cards">
         <Card
           title="Receitas"
-          value={`R$ ${income.toFixed(2)}`}
+          value={formatCurrency(income)}
           icon={<MdTrendingUp />}
         />
 
         <Card
           title="Despesas"
-          value={`R$ ${expense.toFixed(2)}`}
+          value={formatCurrency(expense)}
           icon={<MdTrendingDown />}
         />
 
         <Card
           title="Saldo"
-          value={`R$ ${balance.toFixed(2)}`}
+          value={formatCurrency(balance)}
           icon={<MdAccountBalanceWallet />}
         />
 
@@ -267,10 +269,15 @@ export default function Dashboard() {
             <label>Valor</label>
 
             <input
-              type="number"
+              type="text"
               value={incomeForm.amount}
               onChange={(e) =>
-                setIncomeForm({ ...incomeForm, amount: e.target.value })
+                setIncomeForm({
+                  ...incomeForm,
+                  amount: formatInputCurrency(
+                    e.target.value
+                  )
+                })
               }
             />
           </div>
@@ -322,12 +329,16 @@ export default function Dashboard() {
             <label>Valor</label>
 
             <input
-              type="number"
+              type="text"
               value={expenseForm.amount}
               onChange={(e) =>
-                setExpenseForm({ ...expenseForm, amount: e.target.value })
+                setExpenseForm({
+                  ...expenseForm,
+                  amount: formatInputCurrency(
+                    e.target.value
+                  )
+                })
               }
-              placeholder="0.00"
             />
           </div>
 

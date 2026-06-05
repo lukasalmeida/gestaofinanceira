@@ -1,4 +1,6 @@
 import "./Table.css";
+import { formatCurrency } from "../../utils/currency";
+
 
 export default function Table({ data = [] }) {
   return (
@@ -37,7 +39,11 @@ export default function Table({ data = [] }) {
                 </td>
 
                 <td className={item.type}>
-                  {item.type === "INCOME" ? "+" : "-"} R$ {item.amount}
+                  <td className={item.type}>
+                    {item.type === "INCOME" ? "+" : "-"}
+                    {" "}
+                    {formatCurrency(item.amount)}
+                  </td>
                 </td>
 
                 <td>

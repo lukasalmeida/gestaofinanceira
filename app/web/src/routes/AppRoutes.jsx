@@ -3,9 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../pages/login/Login"
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../pages/Dashboard/Dashboard";
-import Categories from "../pages/Categories";
-import Transactions from "../pages/Transactions";
-import Users from "../pages/Users";
+import Categories from "../pages/Categories/Categories";
+import Transactions from "../pages/Transactions/Transactions";
+import Users from "../pages/Users/Users";
 
 export function AppRoutes() {
   return (
