@@ -4,15 +4,28 @@ const AuthContext = createContext({});
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("@finance:user");
+    const storedUser =
+      localStorage.getItem("@finance:user") ||
+      sessionStorage.getItem("@finance:user");
+
+    const storedToken =
+      localStorage.getItem("@finance:token") ||
+      sessionStorage.getItem("@finance:token");
 
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  async function signIn(data) {
-    localStorage.setItem("@finance:token", data.token);
+  async function signIn(data, rememberMe = false) {
+    const storage = rememberMe
+      ? localStorage
+      : sessionStorage;
 
-    localStorage.setItem(
+    storage.setItem(
+      "@finance:token",
+      data.token
+    );
+
+    storage.setItem(
       "@finance:user",
       JSON.stringify(data.user)
     );

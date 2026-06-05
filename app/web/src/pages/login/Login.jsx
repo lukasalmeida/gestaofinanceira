@@ -29,6 +29,7 @@ export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
 
     const [apiStatus, setApiStatus] = useState("Verificando...");
     const [apiColors, setApiColors] = useState("security-notice");
@@ -69,7 +70,7 @@ export default function Login() {
         try {
             const data = await login(email, password);
 
-            await signIn(data);
+            await signIn(data, rememberMe);
 
             navigate("/");
         } catch (error) {
@@ -119,9 +120,15 @@ export default function Login() {
 
                     <div className="form-options">
                         <label className="checkbox-wrapper">
-                            <input type="checkbox" id="remember" name="remember" />
+                            <input
+                                type="checkbox"
+                                id="remember"
+                                name="remember"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                            />
                             <span className="checkmark"></span>
-                            Remember this device
+                            Lembre de mim
                         </label>
                         <a href="#" className="forgot-link">Reset password</a>
                     </div>
