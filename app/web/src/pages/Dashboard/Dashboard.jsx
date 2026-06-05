@@ -21,6 +21,14 @@ import {
   MdCategory
 } from "react-icons/md";
 
+function parseCurrency(value) {
+  return Number(
+    value
+      .replace(/\./g, "")
+      .replace(",", ".")
+  );
+}
+
 export default function Dashboard() {
   const [incomeModalOpen, setIncomeModalOpen] = useState(false);
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
@@ -42,10 +50,14 @@ export default function Dashboard() {
   }
 
   async function handleCreateTransaction(type, data) {
-    await createTransaction({
+    const payload = {
       type,
       ...data
-    });
+    };
+
+    console.log("Enviando:", payload);
+
+    await createTransaction(payload);
 
     await loadTransactions();
 
@@ -90,7 +102,7 @@ export default function Dashboard() {
 
     await handleCreateTransaction("INCOME", {
       ...incomeForm,
-      amount: Number(incomeForm.amount),
+      amount: parseCurrency(incomeForm.amount),
       date: new Date().toISOString()
     });
 
@@ -106,7 +118,7 @@ export default function Dashboard() {
 
     await handleCreateTransaction("EXPENSE", {
       ...expenseForm,
-      amount: Number(expenseForm.amount),
+      amount: parseCurrency(expenseForm.amount),
       date: new Date().toISOString()
     });
 

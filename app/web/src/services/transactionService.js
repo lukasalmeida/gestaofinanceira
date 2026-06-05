@@ -6,6 +6,11 @@ export async function getTransactions() {
 }
 
 export async function createTransaction(data) {
-  const response = await api.post("/transactions", data);
-  return response.data;
+  try {
+    const response = await api.post("/transactions", data);
+    return response.data;
+  } catch (error) {
+    console.log(error.response?.data);
+    throw error;
+  }
 }
