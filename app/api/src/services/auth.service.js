@@ -32,6 +32,41 @@ async function login(email, password) {
     };
 }
 
+async function register(name, email, password) {
+    const existingUser = await userRepository.findByEmail(email);
+    if (existingUser) {
+        throw new Error('E-mail já está registrado');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await userRepository.create({
+        name,
+        email,
+        password: hashedPassword,
+    });
+
+    const token = jwt.sign(
+        {
+            userId: newUser.id,
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: '1d',
+        }
+    );
+
+    return {
+        token,
+        user: {
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+        },
+    };
+}
+
 module.exports = {
     login,
+    register,
 };

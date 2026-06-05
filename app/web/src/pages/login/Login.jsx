@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { login } from "../../services/authService";
 import { useAuth } from "../../contexts/AuthContext";
@@ -140,6 +140,10 @@ export default function Login() {
                         </div>
                     </button>
                 </form>
+
+                <div className="login-footer">
+                    <p>Não tem uma conta? <Link to="/register" className="link">Criar conta</Link></p>
+                </div>
 
                 <div className={apiColors}>
                     <span>Status da API ⋮ <b> {apiStatus}</b></span>
