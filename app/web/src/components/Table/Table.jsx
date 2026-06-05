@@ -39,11 +39,9 @@ export default function Table({ data = [] }) {
                 </td>
 
                 <td className={item.type}>
-                  <td className={item.type}>
-                    {item.type === "INCOME" ? "+" : "-"}
-                    {" "}
-                    {formatCurrency(item.amount)}
-                  </td>
+                  {item.type === "INCOME" ? "+" : "-"}
+                  {" "}
+                  {formatCurrency(item.amount)}
                 </td>
 
                 <td>

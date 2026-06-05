@@ -72,3 +72,12 @@
 .switch.dark .thumb {
   transform: translateX(24px);
 }
+
+h2.title {
+  width: 65%;
+}
+
+.logout-btn {
+  color: var(--primay);
+  width: 70px;
+}

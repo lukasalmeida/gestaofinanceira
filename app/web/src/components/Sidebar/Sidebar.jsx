@@ -3,7 +3,6 @@ import {
   MdCategory,
   MdPayments,
   MdPeople,
-  MdLogout
 } from "react-icons/md";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -47,14 +46,6 @@ export default function Sidebar() {
           Usuários
         </Link>
       </nav>
-
-      <button
-        className="logout-btn"
-        onClick={handleLogout}
-      >
-        <MdLogout />
-        Sair
-      </button>
     </aside>
   );
 }
