@@ -5,26 +5,13 @@ import './MainLayout.css'
 
 export default function MainLayout({ children }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-      }}
-    >
+    <div className="layout">
       <Sidebar />
 
-      <div
-        style={{
-          flex: 1,
-        }}
-      >
+      <div className="layout-content">
         <Header />
 
-        <main
-          style={{
-            padding: "24px",
-          }}
-        >
+        <main className="layout-main">
           {children}
         </main>
       </div>

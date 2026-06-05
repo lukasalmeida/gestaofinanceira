@@ -49,6 +49,14 @@ async function findById(id, userId) {
     });
 }
 
+async function countByCategory(categoryId) {
+    return prisma.transaction.count({
+        where: {
+            categoryId,
+        },
+    });
+}
+
 async function getSummary(userId) {
   const incomes = await prisma.transaction.aggregate({
     where: {

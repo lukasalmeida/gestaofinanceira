@@ -17,20 +17,20 @@ export default function Modal({
         className="modal"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="modal-header">
-          <h2>{title}</h2>
+        {title && (
+          <div className="modal-header">
+            <h2>{title}</h2>
+            <button
+              className="modal-close"
+              onClick={onClose}
+              aria-label="Fechar modal"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
-          <button
-            className="modal-close"
-            onClick={onClose}
-          >
-            ✕
-          </button>
-        </div>
-
-        <div className="modal-content">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );
