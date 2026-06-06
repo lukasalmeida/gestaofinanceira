@@ -37,6 +37,9 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("@finance:token");
     localStorage.removeItem("@finance:user");
 
+    sessionStorage.removeItem("@finance:token");
+    sessionStorage.removeItem("@finance:user");
+
     setUser(null);
   }
 
