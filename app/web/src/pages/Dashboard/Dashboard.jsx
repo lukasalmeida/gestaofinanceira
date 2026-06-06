@@ -169,88 +169,89 @@ export default function Dashboard() {
 
   return (
     <MainLayout>
-      <div className="dashboard-cards">
-        <Card
-          title="Receitas"
-          value={formatCurrency(income)}
-          icon={<MdTrendingUp />}
-        />
+      <div className="dashboard-container">
+        <div className="dashboard-cards">
+          <Card
+            title="Receitas"
+            value={formatCurrency(income)}
+            icon={<MdTrendingUp />}
+          />
 
-        <Card
-          title="Despesas"
-          value={formatCurrency(expense)}
-          icon={<MdTrendingDown />}
-        />
+          <Card
+            title="Despesas"
+            value={formatCurrency(expense)}
+            icon={<MdTrendingDown />}
+          />
 
-        <Card
-          title="Saldo"
-          value={formatCurrency(balance)}
-          icon={<MdAccountBalanceWallet />}
-        />
+          <Card
+            title="Saldo"
+            value={formatCurrency(balance)}
+            icon={<MdAccountBalanceWallet />}
+          />
 
-        <Card
-          title="Categorias"
-          value={categoriesCount}
-          icon={<MdCategory />}
-        />
+          <Card
+            title="Categorias"
+            value={categoriesCount}
+            icon={<MdCategory />}
+          />
+        </div>
+        <div className="dashboard-actions">
+          <button
+            className="income-btn"
+            onClick={() => setIncomeModalOpen(true)}
+          >
+            + Receita
+          </button>
+
+          <button
+            className="expense-btn"
+            onClick={() => setExpenseModalOpen(true)}
+          >
+            - Despesa
+          </button>
+        </div>
+
+        <div className="table-filters">
+          <select
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value)}
+          >
+            <option value="ALL">Todos</option>
+            <option value="INCOME">Receitas</option>
+            <option value="EXPENSE">Despesas</option>
+          </select>
+
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+
+          <button
+            className="clear-filter-btn"
+            disabled={
+              typeFilter === "ALL" &&
+              !startDate &&
+              !endDate
+            }
+            onClick={() => {
+              setTypeFilter("ALL");
+              setStartDate("");
+              setEndDate("");
+            }}
+          >
+            Limpar Filtros
+          </button>
+        </div>
+
+        <Table data={filteredTransactions} />
       </div>
-      <div className="dashboard-actions">
-        <button
-          className="income-btn"
-          onClick={() => setIncomeModalOpen(true)}
-        >
-          + Receita
-        </button>
-
-        <button
-          className="expense-btn"
-          onClick={() => setExpenseModalOpen(true)}
-        >
-          - Despesa
-        </button>
-      </div>
-
-      <div className="table-filters">
-        <select
-          value={typeFilter}
-          onChange={(e) => setTypeFilter(e.target.value)}
-        >
-          <option value="ALL">Todos</option>
-          <option value="INCOME">Receitas</option>
-          <option value="EXPENSE">Despesas</option>
-        </select>
-
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-
-        <button
-          className="clear-filter-btn"
-          disabled={
-            typeFilter === "ALL" &&
-            !startDate &&
-            !endDate
-          }
-          onClick={() => {
-            setTypeFilter("ALL");
-            setStartDate("");
-            setEndDate("");
-          }}
-        >
-          Limpar Filtros
-        </button>
-      </div>
-
-      <Table data={filteredTransactions} />
-
 
       <Modal
         isOpen={incomeModalOpen}

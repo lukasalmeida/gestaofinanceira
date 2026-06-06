@@ -139,10 +139,12 @@ export default function Categories() {
               <div key={category.id} className="category-card">
                 <div className="category-header">
                   <h3>{category.name}</h3>
+                </div>
+                <p className="badge-type">
                   <span className={`category-badge ${category.type.toLowerCase()}`}>
                     {category.type === "EXPENSE" ? "Despesa" : "Receita"}
                   </span>
-                </div>
+                </p>
                 <p className="category-date">
                   Criada em {new Date(category.createdAt).toLocaleDateString("pt-BR")}
                 </p>
