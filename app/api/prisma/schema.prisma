@@ -21,6 +21,27 @@ model Family {
     @@map("families")
 }
 
+model Bill {
+  id            String   @id @default(uuid())
+  description   String
+  amount        Decimal  @db.Decimal(10, 2)
+
+  recurrence    RecurrenceType
+
+  dueDay        Int
+
+  createdAt     DateTime @default(now())
+
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum RecurrenceType {
+  MONTHLY
+  YEARLY
+  ONCE
+}
+
 model User {
     id        String   @id @default(uuid())
     name      String
@@ -33,6 +54,7 @@ model User {
     categories   Category[]
     transactions Transaction[]
     accounts     Account[]
+    bills         Bill[]
 
     @@map("users")
 }
