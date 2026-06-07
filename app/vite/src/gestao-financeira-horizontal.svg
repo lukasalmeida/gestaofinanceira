@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFB300"/>
+      <stop offset="100%" stop-color="#FF5A00"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Logo -->
+  <g transform="translate(20,20)">
+    <path d="M140 20 A120 120 0 1 1 55 230" fill="none" stroke="url(#grad)" stroke-width="18"/>
+    <path d="M40 190 L115 125 L170 80 L205 95 L265 35"
+          fill="none" stroke="url(#grad)" stroke-width="12" stroke-linecap="round"/>
+    <polygon points="265,35 248,38 258,22" fill="#FF9A00"/>
+    <circle cx="115" cy="125" r="10" fill="#FF9A00"/>
+    <circle cx="170" cy="80" r="10" fill="#FF9A00"/>
+    <circle cx="205" cy="95" r="10" fill="#FF9A00"/>
+
+    <rect x="100" y="150" width="28" height="60" fill="url(#grad)"/>
+    <rect x="145" y="120" width="28" height="90" fill="url(#grad)"/>
+    <rect x="190" y="95" width="28" height="115" fill="url(#grad)"/>
+    <rect x="235" y="65" width="28" height="145" fill="url(#grad)"/>
+  </g>
+
+  <!-- Texto ao lado -->
+  <g transform="translate(340,125)">
+    <text x="0" y="0"
+          font-family="Arial, Helvetica, sans-serif"
+          font-size="82"
+          font-weight="700"
+          fill="url(#grad)">Gestão</text>
+
+    <text x="0" y="95"
+          font-family="Arial, Helvetica, sans-serif"
+          font-size="82"
+          font-weight="700"
+          fill="url(#grad)">Financeira</text>
+  </g>
+</svg>

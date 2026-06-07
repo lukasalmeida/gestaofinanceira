@@ -50,7 +50,7 @@ export default function HorizontalBar() {
           justifyContent: 'center',
           borderTop: '1px solid',
           borderColor: 'grey.300',
-          zIndex: 1098
+          zIndex: 1098,
         })}
       >
         <Container maxWidth={container ? 'lg' : false}>

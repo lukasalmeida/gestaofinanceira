@@ -100,7 +100,7 @@ export default function FinanceDashboard() {
   ];
 
   return (
-    <Grid container spacing={gridSpacing}>
+    <Grid container spacing={gridSpacing} sx={{mt: 2}}>
       {stats.map((stat) => (
         <Grid key={stat.label} size={{ lg: 3, md: 6, sm: 6, xs: 12 }}>
           <MainCard contentSX={{ p: 2.5 }}>

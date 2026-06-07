@@ -130,7 +130,7 @@ export default function Breadcrumbs({
           mb: -0.625,
           textOverflow: 'ellipsis',
           maxWidth: { xs: 102, sm: 'unset' },
-          display: 'inline-block'
+          display: 'inline-block',
         }}
         color={window.location.pathname === main.url ? 'text.primary' : 'text.secondary'}
       >
@@ -142,35 +142,35 @@ export default function Breadcrumbs({
 
   if (!custom && main && main.type === 'collapse' && main.breadcrumbs === true) {
     breadcrumbContent = (
-      <Card sx={card === false ? { mb: 3, bgcolor: 'transparent', ...sx } : { mb: 3, bgcolor: 'background.default', ...sx }} {...others}>
-        <Box sx={{ p: 1.25, px: card === false ? 0 : 2 }}>
-          <Grid
-            container
-            direction={rightAlign ? 'row' : 'column'}
-            sx={{ justifyContent: rightAlign ? 'space-between' : 'flex-start', alignItems: rightAlign ? 'center' : 'flex-start' }}
-            spacing={1}
-          >
-            {title && !titleBottom && <BTitle title={main.title} />}
-            <Grid>
-              <MuiBreadcrumbs
-                aria-label="breadcrumb"
-                maxItems={maxItems || 8}
-                separator={separatorIcon}
-                sx={{ '& .MuiBreadcrumbs-separator': { width: 16, ml: 1.25, mr: 1.25 } }}
-              >
-                <Typography component={Link} to="/" variant="h6" sx={{ ...linkSX, color: 'text.secondary' }}>
-                  {icons && <HomeTwoToneIcon style={iconSX} />}
-                  {icon && !icons && <HomeIcon style={{ ...iconSX, marginRight: 0 }} />}
-                  {(!icon || icons) && 'Dashboard'}
-                </Typography>
-                {mainContent}
-              </MuiBreadcrumbs>
+        <Card sx={card === false ? { mb: 3, bgcolor: 'transparent', ...sx } : { mb: 3, bgcolor: 'background.default', ...sx }} {...others}>
+          <Box sx={{ p: 1.25, px: card === false ? 0 : 2 }}>
+            <Grid
+              container
+              direction={rightAlign ? 'row' : 'column'}
+              sx={{ justifyContent: rightAlign ? 'space-between' : 'flex-start', alignItems: rightAlign ? 'center' : 'flex-start' }}
+              spacing={1}
+            >
+              {title && !titleBottom && <BTitle title={main.title} />}
+              <Grid>
+                <MuiBreadcrumbs
+                  aria-label="breadcrumb"
+                  maxItems={maxItems || 8}
+                  separator={separatorIcon}
+                  sx={{ '& .MuiBreadcrumbs-separator': { width: 16, ml: 1.25, mr: 1.25 } }}
+                >
+                  <Typography component={Link} to="/" variant="h6" sx={{ ...linkSX, color: 'text.secondary' }}>
+                    {icons && <HomeTwoToneIcon style={iconSX} />}
+                    {icon && !icons && <HomeIcon style={{ ...iconSX, marginRight: 0 }} />}
+                    {(!icon || icons) && 'Dashboard'}
+                  </Typography>
+                  {mainContent}
+                </MuiBreadcrumbs>
+              </Grid>
+              {title && titleBottom && <BTitle title={main.title} />}
             </Grid>
-            {title && titleBottom && <BTitle title={main.title} />}
-          </Grid>
-        </Box>
-        {card === false && divider !== false && <Divider sx={{ mt: 2 }} />}
-      </Card>
+          </Box>
+          {card === false && divider !== false && <Divider sx={{ mt: 2 }} />}
+        </Card>
     );
   }
 
@@ -251,10 +251,10 @@ export default function Breadcrumbs({
             card === false
               ? { mb: 3, bgcolor: 'transparent', ...sx }
               : {
-                  mb: 3,
-                  bgcolor: 'background.default',
-                  ...sx
-                }
+                mb: 3,
+                bgcolor: 'background.default',
+                ...sx
+              }
           }
           {...others}
         >

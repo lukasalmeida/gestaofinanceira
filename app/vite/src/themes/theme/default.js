@@ -5,18 +5,18 @@ const defaultColor = {
   paper: '#ffffff',
 
   // primary
-  primaryLight: '#e3f2fd',
-  primary200: '#90caf9',
-  primaryMain: '#2196f3',
-  primaryDark: '#1e88e5',
-  primary800: '#1565c0',
+  primaryLight: '#fdf0e3',
+  primary200: '#f9bc90',
+  primaryMain: '#f36021',
+  primaryDark: '#e5781e',
+  primary800: '#c05f15',
 
   // secondary
-  secondaryLight: '#ede7f6',
-  secondary200: '#b39ddb',
-  secondaryMain: '#673ab7',
-  secondaryDark: '#5e35b1',
-  secondary800: '#4527a0',
+  secondaryLight: '#f6ede7',
+  secondary200: '#dbb19d',
+  secondaryMain: '#b7643a',
+  secondaryDark: '#b16d35',
+  secondary800: '#a06c27',
 
   // success
   successLight: '#b9f6ca',
