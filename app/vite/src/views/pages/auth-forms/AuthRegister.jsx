@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // material-ui
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
@@ -18,78 +18,114 @@ import Box from '@mui/material/Box';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import CustomFormControl from 'ui-component/extended/Form/CustomFormControl';
+import { useAuth } from 'contexts/AuthContext';
+import { register } from 'services/authService';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-// ===========================|| JWT - REGISTER ||=========================== //
-
 export default function AuthRegister() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [checked, setChecked] = useState(true);
+  const navigate = useNavigate();
+  const { signIn } = useAuth();
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(true);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const changePassword = (value) => {
-    const temp = strengthIndicator(value);
-    setStrength(temp);
-    setLevel(strengthColor(temp));
-  };
-
   useEffect(() => {
-    changePassword('123456');
-  }, []);
+    if (password) {
+      const temp = strengthIndicator(password);
+      setStrength(temp);
+      setLevel(strengthColor(temp));
+    } else {
+      setStrength(0);
+      setLevel(undefined);
+    }
+  }, [password]);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError('');
+
+    if (password !== confirmPassword) {
+      setError('As senhas não coincidem');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const data = await register(name, email, password, confirmPassword);
+      signIn(data, true);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.error || 'Erro ao criar conta');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <>
+    <Box component="form" onSubmit={handleSubmit}>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+
       <Stack sx={{ mb: 2, alignItems: 'center' }}>
-        <Typography variant="subtitle1">Sign up with Email address </Typography>
+        <Typography variant="subtitle1">Cadastre-se com e-mail</Typography>
       </Stack>
 
-      <Grid container spacing={{ xs: 0, sm: 2 }}>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <CustomFormControl fullWidth>
-            <InputLabel htmlFor="outlined-adornment-first-register">First Name</InputLabel>
-            <OutlinedInput id="outlined-adornment-first-register" type="text" name="firstName" value="Jhones" />
-          </CustomFormControl>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <CustomFormControl fullWidth>
-            <InputLabel htmlFor="outlined-adornment-last-register">Last Name</InputLabel>
-            <OutlinedInput id="outlined-adornment-last-register" type="text" name="lastName" value="Doe" />
-          </CustomFormControl>
-        </Grid>
-      </Grid>
-      <CustomFormControl fullWidth>
-        <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
-        <OutlinedInput id="outlined-adornment-email-register" type="email" value="jones@doe.com" name="email" />
+      <CustomFormControl fullWidth sx={{ mb: 2 }}>
+        <InputLabel htmlFor="outlined-adornment-name-register">Nome completo</InputLabel>
+        <OutlinedInput
+          id="outlined-adornment-name-register"
+          type="text"
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
       </CustomFormControl>
 
-      <CustomFormControl fullWidth>
-        <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
+      <CustomFormControl fullWidth sx={{ mb: 2 }}>
+        <InputLabel htmlFor="outlined-adornment-email-register">E-mail</InputLabel>
+        <OutlinedInput
+          id="outlined-adornment-email-register"
+          type="email"
+          value={email}
+          name="email"
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </CustomFormControl>
+
+      <CustomFormControl fullWidth sx={{ mb: 2 }}>
+        <InputLabel htmlFor="outlined-adornment-password-register">Senha</InputLabel>
         <OutlinedInput
           id="outlined-adornment-password-register"
           type={showPassword ? 'text' : 'password'}
-          value="Jhones@123"
+          value={password}
           name="password"
-          label="Password"
+          label="Senha"
+          onChange={(e) => setPassword(e.target.value)}
+          required
           endAdornment={
             <InputAdornment position="end">
               <IconButton
                 aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
+                onClick={() => setShowPassword(!showPassword)}
+                onMouseDown={(event) => event.preventDefault()}
                 edge="end"
                 size="large"
               >
@@ -97,6 +133,19 @@ export default function AuthRegister() {
               </IconButton>
             </InputAdornment>
           }
+        />
+      </CustomFormControl>
+
+      <CustomFormControl fullWidth sx={{ mb: 2 }}>
+        <InputLabel htmlFor="outlined-adornment-confirm-password-register">Confirmar senha</InputLabel>
+        <OutlinedInput
+          id="outlined-adornment-confirm-password-register"
+          type={showPassword ? 'text' : 'password'}
+          value={confirmPassword}
+          name="confirmPassword"
+          label="Confirmar senha"
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
         />
       </CustomFormControl>
 
@@ -114,12 +163,19 @@ export default function AuthRegister() {
       )}
 
       <FormControlLabel
-        control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />}
+        control={
+          <Checkbox
+            checked={acceptedTerms}
+            onChange={(event) => setAcceptedTerms(event.target.checked)}
+            name="acceptedTerms"
+            color="primary"
+          />
+        }
         label={
           <Typography variant="subtitle1">
-            Agree with &nbsp;
+            Concordo com os &nbsp;
             <Typography variant="subtitle1" component={Link} to="#">
-              Terms & Condition.
+              Termos de Uso
             </Typography>
           </Typography>
         }
@@ -127,11 +183,11 @@ export default function AuthRegister() {
 
       <Box sx={{ mt: 2 }}>
         <AnimateButton>
-          <Button disableElevation fullWidth size="large" type="submit" variant="contained" color="secondary">
-            Sign up
+          <Button disableElevation disabled={loading || !acceptedTerms} fullWidth size="large" type="submit" variant="contained" color="secondary">
+            {loading ? 'Criando conta...' : 'Criar conta'}
           </Button>
         </AnimateButton>
       </Box>
-    </>
+    </Box>
   );
 }

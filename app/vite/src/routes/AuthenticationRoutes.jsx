@@ -3,24 +3,27 @@ import { lazy } from 'react';
 // project imports
 import Loadable from 'ui-component/Loadable';
 import MinimalLayout from 'layout/MinimalLayout';
+import GuestRoute from './GuestRoute';
 
-// maintenance routing
 const LoginPage = Loadable(lazy(() => import('views/pages/authentication/Login')));
 const RegisterPage = Loadable(lazy(() => import('views/pages/authentication/Register')));
 
-// ==============================|| AUTHENTICATION ROUTING ||============================== //
-
 const AuthenticationRoutes = {
   path: '/',
-  element: <MinimalLayout />,
+  element: <GuestRoute />,
   children: [
     {
-      path: '/pages/login',
-      element: <LoginPage />
-    },
-    {
-      path: '/pages/register',
-      element: <RegisterPage />
+      element: <MinimalLayout />,
+      children: [
+        {
+          path: 'login',
+          element: <LoginPage />
+        },
+        {
+          path: 'register',
+          element: <RegisterPage />
+        }
+      ]
     }
   ]
 };

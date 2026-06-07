@@ -3,52 +3,36 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import PrivateRoute from './PrivateRoute';
 
-// dashboard routing
-const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
-
-// utilities routing
-const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
-const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
-const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
-
-// sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
-
-// ==============================|| MAIN ROUTING ||============================== //
+const FinanceDashboard = Loadable(lazy(() => import('views/finance/Dashboard')));
+const CategoriesPage = Loadable(lazy(() => import('views/finance/Categories')));
+const TransactionsPage = Loadable(lazy(() => import('views/finance/Transactions')));
+const UsersPage = Loadable(lazy(() => import('views/finance/Users')));
 
 const MainRoutes = {
   path: '/',
-  element: <MainLayout />,
+  element: (
+    <PrivateRoute>
+      <MainLayout />
+    </PrivateRoute>
+  ),
   children: [
     {
       path: '/',
-      element: <DashboardDefault />
+      element: <FinanceDashboard />
     },
     {
-      path: 'dashboard',
-      children: [
-        {
-          path: 'default',
-          element: <DashboardDefault />
-        }
-      ]
+      path: 'transactions',
+      element: <TransactionsPage />
     },
     {
-      path: 'typography',
-      element: <UtilsTypography />
+      path: 'categories',
+      element: <CategoriesPage />
     },
     {
-      path: 'color',
-      element: <UtilsColor />
-    },
-    {
-      path: 'shadow',
-      element: <UtilsShadow />
-    },
-    {
-      path: '/sample-page',
-      element: <SamplePage />
+      path: 'users',
+      element: <UsersPage />
     }
   ]
 };

@@ -1,12 +1,7 @@
-import dashboard from './dashboard';
-import pages from './pages';
-import utilities from './utilities';
-import other from './other';
-
-// ==============================|| MENU ITEMS ||============================== //
+import finance from './finance';
 
 const menuItems = {
-  items: [dashboard, pages, utilities, other]
+  items: [finance]
 };
 
 export default menuItems;
