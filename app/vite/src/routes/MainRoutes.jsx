@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute';
 const FinanceDashboard = Loadable(lazy(() => import('views/finance/Dashboard')));
 const CategoriesPage = Loadable(lazy(() => import('views/finance/Categories')));
 const TransactionsPage = Loadable(lazy(() => import('views/finance/Transactions')));
+const BillsPage = Loadable(lazy(() => import('views/finance/Bills')));
 const FamilyPage = Loadable(lazy(() => import('views/family/Family')));
 
 const MainRoutes = {
@@ -29,6 +30,10 @@ const MainRoutes = {
     {
       path: 'categories',
       element: <CategoriesPage />
+    },
+    {
+      path: 'bills',
+      element: <BillsPage />
     },
     {
       path: 'family',

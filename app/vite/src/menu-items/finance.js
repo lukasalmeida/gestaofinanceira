@@ -1,9 +1,10 @@
-import { IconCategory, IconDashboard, IconReceipt, IconUsersGroup } from '@tabler/icons-react';
+import { IconCategory, IconDashboard, IconFileInvoice, IconReceipt, IconUsersGroup } from '@tabler/icons-react';
 
 const icons = {
   IconDashboard,
   IconReceipt,
   IconCategory,
+  IconFileInvoice,
   IconUsersGroup
 };
 
@@ -34,6 +35,14 @@ const finance = {
       type: 'item',
       url: '/categories',
       icon: icons.IconCategory,
+      breadcrumbs: true
+    },
+    {
+      id: 'bills',
+      title: 'Contas',
+      type: 'item',
+      url: '/bills',
+      icon: icons.IconFileInvoice,
       breadcrumbs: true
     },
     {
