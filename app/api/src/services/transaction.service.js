@@ -1,19 +1,37 @@
 const repository = require('../repositories/transaction.repository');
+const {
+  getUserScope,
+  canAccessRecord,
+  buildCreatePayload,
+} = require('../utils/familyScope');
 
-async function create(data) {
-  return repository.create(data);
+async function create(userId, data) {
+  const scope = await getUserScope(userId);
+  const payload = buildCreatePayload(scope, userId, data);
+
+  return repository.create(payload);
 }
 
 async function findAll(userId, startDate, endDate, page, limit, type) {
-  return repository.findAllByUser(userId, startDate, endDate, page, limit, type);
+  const scope = await getUserScope(userId);
+
+  return repository.findAllByScope(scope, startDate, endDate, page, limit, type);
 }
 
 async function findById(id, userId) {
-  return repository.findById(id, userId);
+  const scope = await getUserScope(userId);
+  const transaction = await repository.findById(id);
+
+  if (!canAccessRecord(scope, transaction)) {
+    return null;
+  }
+
+  return transaction;
 }
 
 async function getSummary(userId, startDate, endDate, type) {
-  const summary = await repository.getSummary(userId, startDate, endDate, type);
+  const scope = await getUserScope(userId);
+  const summary = await repository.getSummary(scope, startDate, endDate, type);
 
   return {
     ...summary,
@@ -22,9 +40,10 @@ async function getSummary(userId, startDate, endDate, type) {
 }
 
 async function update(id, userId, data) {
-  const transaction = await repository.findById(id, userId);
+  const scope = await getUserScope(userId);
+  const transaction = await repository.findById(id);
 
-  if (!transaction) {
+  if (!canAccessRecord(scope, transaction)) {
     throw new Error('Transação não encontrada');
   }
 
@@ -32,9 +51,10 @@ async function update(id, userId, data) {
 }
 
 async function remove(id, userId) {
-  const transaction = await repository.findById(id, userId);
+  const scope = await getUserScope(userId);
+  const transaction = await repository.findById(id);
 
-  if (!transaction) {
+  if (!canAccessRecord(scope, transaction)) {
     throw new Error('Transação não encontrada');
   }
 
@@ -44,7 +64,8 @@ async function remove(id, userId) {
 }
 
 async function getCategorySummary(userId) {
-  return repository.getCategorySummary(userId);
+  const scope = await getUserScope(userId);
+  return repository.getCategorySummary(scope);
 }
 
 module.exports = {

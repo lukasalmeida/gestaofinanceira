@@ -1,10 +1,10 @@
-import { IconCategory, IconDashboard, IconReceipt, IconUsers } from '@tabler/icons-react';
+import { IconCategory, IconDashboard, IconReceipt, IconUsersGroup } from '@tabler/icons-react';
 
 const icons = {
   IconDashboard,
   IconReceipt,
   IconCategory,
-  IconUsers
+  IconUsersGroup
 };
 
 const finance = {
@@ -37,11 +37,11 @@ const finance = {
       breadcrumbs: true
     },
     {
-      id: 'users',
-      title: 'Usuários',
+      id: 'family',
+      title: 'Família',
       type: 'item',
-      url: '/users',
-      icon: icons.IconUsers,
+      url: '/family',
+      icon: icons.IconUsersGroup,
       breadcrumbs: true
     }
   ]

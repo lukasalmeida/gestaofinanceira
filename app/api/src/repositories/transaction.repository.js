@@ -1,5 +1,6 @@
 const prisma = require('../config/prisma');
 const { buildDateFilter } = require('../utils/dateRange');
+const { buildOwnershipWhere } = require('../utils/familyScope');
 
 const ALLOWED_LIMITS = [10, 20, 50, 100];
 
@@ -16,14 +17,12 @@ function normalizePagination(page, limit) {
 async function create(data) {
   return prisma.transaction.create({
     data,
-    include: {
-      category: true,
-    },
+    include: { category: true },
   });
 }
 
-async function findAllByUser(userId, startDate, endDate, page = 1, limit = 10, type) {
-  const where = { userId };
+async function findAllByScope(scope, startDate, endDate, page = 1, limit = 10, type) {
+  const where = { ...buildOwnershipWhere(scope) };
 
   const dateFilter = buildDateFilter(startDate, endDate);
   if (dateFilter) {
@@ -41,12 +40,8 @@ async function findAllByUser(userId, startDate, endDate, page = 1, limit = 10, t
 
   const transactions = await prisma.transaction.findMany({
     where,
-    include: {
-      category: true,
-    },
-    orderBy: {
-      date: 'desc',
-    },
+    include: { category: true },
+    orderBy: { date: 'desc' },
     skip,
     take: currentLimit,
   });
@@ -62,28 +57,21 @@ async function findAllByUser(userId, startDate, endDate, page = 1, limit = 10, t
   };
 }
 
-async function findById(id, userId) {
-  return prisma.transaction.findFirst({
-    where: {
-      id,
-      userId,
-    },
-    include: {
-      category: true,
-    },
+async function findById(id) {
+  return prisma.transaction.findUnique({
+    where: { id },
+    include: { category: true },
   });
 }
 
 async function countByCategory(categoryId) {
   return prisma.transaction.count({
-    where: {
-      categoryId,
-    },
+    where: { categoryId },
   });
 }
 
-async function getSummary(userId, startDate, endDate, type) {
-  const where = { userId };
+async function getSummary(scope, startDate, endDate, type) {
+  const where = { ...buildOwnershipWhere(scope) };
 
   const dateFilter = buildDateFilter(startDate, endDate);
   if (dateFilter) {
@@ -114,9 +102,7 @@ async function update(id, data) {
   return prisma.transaction.update({
     where: { id },
     data,
-    include: {
-      category: true,
-    },
+    include: { category: true },
   });
 }
 
@@ -126,10 +112,12 @@ async function remove(id) {
   });
 }
 
-async function getCategorySummary(userId) {
+async function getCategorySummary(scope) {
+  const ownershipWhere = buildOwnershipWhere(scope);
+
   const transactions = await prisma.transaction.groupBy({
     by: ['categoryId'],
-    where: { userId },
+    where: ownershipWhere,
     _sum: { amount: true },
   });
 
@@ -154,7 +142,7 @@ async function getCategorySummary(userId) {
 
 module.exports = {
   create,
-  findAllByUser,
+  findAllByScope,
   findById,
   getSummary,
   update,

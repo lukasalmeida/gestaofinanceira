@@ -20,12 +20,11 @@ async function create(req, res) {
     const userId = req.user.id;
     const { description, amount, type, categoryId, date } = req.body;
 
-    const transaction = await service.create({
+    const transaction = await service.create(userId, {
       description,
       amount,
       type,
       categoryId,
-      userId,
       date,
     });
 
