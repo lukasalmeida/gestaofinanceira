@@ -1,7 +1,18 @@
-const service = require("../services/transaction.service");
-const { createTransactionSchema } = require("../validations/transaction.validation");
-const { updateTransactionSchema } = require("../validations/transaction.validation");
-const { ZodError } = require("zod");
+const service = require('../services/transaction.service');
+const { createTransactionSchema, updateTransactionSchema } = require('../validations/transaction.validation');
+const { ZodError } = require('zod');
+
+const ALLOWED_LIMITS = [10, 20, 50, 100];
+
+function parsePagination(page, limit) {
+  const parsedPage = Number(page);
+  const parsedLimit = Number(limit);
+
+  const currentPage = Number.isFinite(parsedPage) && parsedPage > 0 ? Math.floor(parsedPage) : 1;
+  const currentLimit = ALLOWED_LIMITS.includes(parsedLimit) ? parsedLimit : 10;
+
+  return { currentPage, currentLimit };
+}
 
 async function create(req, res) {
   try {
@@ -15,46 +26,38 @@ async function create(req, res) {
       type,
       categoryId,
       userId,
-      date
+      date,
     });
 
     return res.json(transaction);
   } catch (error) {
-
     if (error instanceof ZodError) {
-      return res.status(400).json({
-        errors: error.issues
-      });
+      return res.status(400).json({ errors: error.issues });
     }
-    
-    return res.status(400).json({
-      message: error.message
-    });
+
+    return res.status(400).json({ message: error.message });
   }
 }
 
 async function findAll(req, res) {
-    try {
-        const userId = req.user.id;
+  try {
+    const userId = req.user.id;
+    const { startDate, endDate, page, limit, type } = req.query;
+    const { currentPage, currentLimit } = parsePagination(page, limit);
 
-        const {
-            startDate,
-            endDate
-        } = req.query;
+    const result = await service.findAll(
+      userId,
+      startDate || undefined,
+      endDate || undefined,
+      currentPage,
+      currentLimit,
+      type || undefined
+    );
 
-        const transactions = await service.findAll(
-            userId,
-            startDate,
-            endDate
-        );
-
-        return res.json(transactions);
-
-    } catch (error) {
-        return res.status(400).json({
-            message: error.message
-        });
-    }
+    return res.json(result);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
 }
 
 async function findById(req, res) {
@@ -65,31 +68,31 @@ async function findById(req, res) {
     const transaction = await service.findById(id, userId);
 
     if (!transaction) {
-      return res.status(404).json({
-        message: "Transação não encontrada"
-      });
+      return res.status(404).json({ message: 'Transação não encontrada' });
     }
 
     return res.json(transaction);
   } catch (error) {
-    return res.status(400).json({
-      message: error.message
-    });
+    return res.status(400).json({ message: error.message });
   }
 }
 
 async function summary(req, res) {
-    try {
-        const userId = req.user.id;
+  try {
+    const userId = req.user.id;
+    const { startDate, endDate, type } = req.query;
 
-        const result = await service.getSummary(userId);
+    const result = await service.getSummary(
+      userId,
+      startDate || undefined,
+      endDate || undefined,
+      type || undefined
+    );
 
-        return res.json(result);
-    } catch (error) {
-        return res.status(400).json({
-            message: error.message,
-        });
-    }
+    return res.json(result);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
 }
 
 async function update(req, res) {
@@ -104,15 +107,12 @@ async function update(req, res) {
       amount,
       type,
       categoryId,
-      date
+      date,
     });
 
     return res.json(transaction);
-
   } catch (error) {
-    return res.status(400).json({
-      message: error.message,
-    });
+    return res.status(400).json({ message: error.message });
   }
 }
 
@@ -123,13 +123,9 @@ async function remove(req, res) {
 
     await service.remove(id, userId);
 
-    return res.json({
-      message: "Transação removida com sucesso",
-    });
+    return res.json({ message: 'Transação removida com sucesso' });
   } catch (error) {
-    return res.status(400).json({
-      message: error.message,
-    });
+    return res.status(400).json({ message: error.message });
   }
 }
 
@@ -140,18 +136,16 @@ async function categorySummary(req, res) {
 
     return res.json(result);
   } catch (error) {
-    return res.status(400).json({
-      message: error.message,
-    });
+    return res.status(400).json({ message: error.message });
   }
 }
 
 module.exports = {
-  create, 
+  create,
   findAll,
   findById,
   summary,
   update,
   remove,
-  categorySummary
+  categorySummary,
 };
