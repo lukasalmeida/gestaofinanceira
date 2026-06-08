@@ -24,19 +24,19 @@ const MainRoutes = {
       element: <FinanceDashboard />
     },
     {
-      path: 'transactions',
+      path: 'transacoes',
       element: <TransactionsPage />
     },
     {
-      path: 'categories',
+      path: 'categorias',
       element: <CategoriesPage />
     },
     {
-      path: 'bills',
+      path: 'contas',
       element: <BillsPage />
     },
     {
-      path: 'family',
+      path: 'familia',
       element: <FamilyPage />
     }
   ]

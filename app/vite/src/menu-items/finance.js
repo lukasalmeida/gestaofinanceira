@@ -25,7 +25,7 @@ const finance = {
       id: 'transactions',
       title: 'Transações',
       type: 'item',
-      url: '/transactions',
+      url: '/transacoes',
       icon: icons.IconReceipt,
       breadcrumbs: true
     },
@@ -33,7 +33,7 @@ const finance = {
       id: 'categories',
       title: 'Categorias',
       type: 'item',
-      url: '/categories',
+      url: '/categorias',
       icon: icons.IconCategory,
       breadcrumbs: true
     },
@@ -41,7 +41,7 @@ const finance = {
       id: 'bills',
       title: 'Contas',
       type: 'item',
-      url: '/bills',
+      url: '/contas',
       icon: icons.IconFileInvoice,
       breadcrumbs: true
     },
@@ -49,7 +49,7 @@ const finance = {
       id: 'family',
       title: 'Família',
       type: 'item',
-      url: '/family',
+      url: '/familia',
       icon: icons.IconUsersGroup,
       breadcrumbs: true
     }
