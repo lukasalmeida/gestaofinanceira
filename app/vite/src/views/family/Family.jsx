@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 
-// material-ui
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,23 +21,31 @@ import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-// project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import { createFamily, getMyFamily, joinFamily } from 'services/familyService';
+import { useAuth } from 'contexts/AuthContext';
+import {
+  createFamily,
+  getMyFamily,
+  joinFamily,
+  removeFamilyMember,
+  rotateFamilyToken
+} from 'services/familyService';
 
-// assets
-import { IconCopy, IconUsersGroup } from '@tabler/icons-react';
+import { IconCopy, IconRefresh, IconUserMinus, IconUsersGroup } from '@tabler/icons-react';
 
 export default function FamilyPage() {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [family, setFamily] = useState(null);
   const [members, setMembers] = useState([]);
+  const [isCreator, setIsCreator] = useState(false);
   const [tokenInput, setTokenInput] = useState('');
   const [familyName, setFamilyName] = useState('');
+  const [memberToRemove, setMemberToRemove] = useState(null);
 
   async function loadFamily() {
     setLoading(true);
@@ -42,6 +55,7 @@ export default function FamilyPage() {
       const data = await getMyFamily();
       setFamily(data.family);
       setMembers(data.members || []);
+      setIsCreator(!!data.isCreator);
     } catch (err) {
       setError(err.response?.data?.message || 'Erro ao carregar dados da família');
     } finally {
@@ -53,6 +67,12 @@ export default function FamilyPage() {
     loadFamily();
   }, []);
 
+  function applyFamilyData(data) {
+    setFamily(data.family);
+    setMembers(data.members || []);
+    setIsCreator(!!data.isCreator);
+  }
+
   async function handleCreateFamily() {
     setSubmitting(true);
     setError('');
@@ -60,9 +80,8 @@ export default function FamilyPage() {
 
     try {
       const data = await createFamily(familyName.trim() || undefined);
-      setFamily(data.family);
-      setMembers(data.members || []);
-      setSuccess('Família criada com sucesso! Compartilhe o token com quem deseja convidar.');
+      applyFamilyData(data);
+      setSuccess('Família criada com sucesso!');
       setFamilyName('');
     } catch (err) {
       setError(err.response?.data?.message || 'Erro ao criar família');
@@ -83,8 +102,7 @@ export default function FamilyPage() {
 
     try {
       const data = await joinFamily(tokenInput);
-      setFamily(data.family);
-      setMembers(data.members || []);
+      applyFamilyData(data);
       setSuccess('Você ingressou na família com sucesso!');
       setTokenInput('');
     } catch (err) {
@@ -99,9 +117,44 @@ export default function FamilyPage() {
 
     try {
       await navigator.clipboard.writeText(family.inviteToken);
-      setSuccess('Token copiado para a área de transferência!');
+      setSuccess('Código copiado para a área de transferência!');
     } catch {
-      setError('Não foi possível copiar o token');
+      setError('Não foi possível copiar o código');
+    }
+  }
+
+  async function handleRotateToken() {
+    setSubmitting(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const data = await rotateFamilyToken();
+      applyFamilyData(data);
+      setSuccess('Novo código gerado com sucesso!');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Erro ao gerar novo código');
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function handleRemoveMember() {
+    if (!memberToRemove) return;
+
+    setSubmitting(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const data = await removeFamilyMember(memberToRemove.id);
+      applyFamilyData(data);
+      setSuccess('Membro removido da família com sucesso');
+      setMemberToRemove(null);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Erro ao remover membro');
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -141,9 +194,6 @@ export default function FamilyPage() {
         <Grid size={{ xs: 12, md: 6 }}>
           <MainCard title="Iniciar Família">
             <Stack spacing={2}>
-              <Typography variant="body2" color="text.secondary">
-                Crie uma nova família e receba um token para convidar outras pessoas.
-              </Typography>
               <TextField
                 label="Nome da família (opcional)"
                 value={familyName}
@@ -160,9 +210,6 @@ export default function FamilyPage() {
         <Grid size={{ xs: 12, md: 6 }}>
           <MainCard title="Ingressar em uma Família">
             <Stack spacing={2}>
-              <Typography variant="body2" color="text.secondary">
-                Informe o token recebido de quem criou a família.
-              </Typography>
               <TextField
                 label="Token"
                 placeholder="FAM-8XK4-9Q2P"
@@ -183,9 +230,12 @@ export default function FamilyPage() {
   return (
     <Grid container spacing={gridSpacing}>
       <Grid size={12}>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          Dados financeiros compartilhados entre os membros da família.
-        </Typography>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <IconUsersGroup size={24} />
+          <Typography variant="body2" color="text.secondary">
+            Dados financeiros compartilhados entre os membros da família.
+          </Typography>
+        </Stack>
       </Grid>
 
       {error && (
@@ -210,17 +260,32 @@ export default function FamilyPage() {
               <Typography variant="body1">{family.id}</Typography>
             </Box>
 
-            <Box>
-              <Typography variant="caption" color="text.secondary">
-                Token de convite
-              </Typography>
-              <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.5 }}>
-                <Chip label={family.inviteToken} color="primary" />
-                <Button variant="outlined" size="small" startIcon={<IconCopy size={16} />} onClick={handleCopyToken}>
-                  Copiar Token
-                </Button>
-              </Stack>
-            </Box>
+            {isCreator && family.inviteToken && (
+              <Box>
+                <Typography variant="caption" color="text.secondary">
+                  Código de convite
+                </Typography>
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.5, flexWrap: 'wrap', gap: 1 }}>
+                  <Chip label={family.inviteToken} color="warning" />
+                  <Button variant="outlined" size="small" startIcon={<IconCopy size={16} />} onClick={handleCopyToken}>
+                    Copiar código
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="warning"
+                    size="small"
+                    startIcon={<IconRefresh size={16} />}
+                    disabled={submitting}
+                    onClick={handleRotateToken}
+                  >
+                    Gerar novo código
+                  </Button>
+                </Stack>
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  Código válido até o final do dia.
+                </Typography>
+              </Box>
+            )}
 
             <Box>
               <Typography variant="caption" color="text.secondary">
@@ -250,29 +315,54 @@ export default function FamilyPage() {
                   <TableCell>Nome</TableCell>
                   <TableCell>E-mail</TableCell>
                   <TableCell>Data de entrada</TableCell>
+                  {isCreator && <TableCell align="right">Ações</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {members.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={3} align="center">
-                      Nenhum membro encontrado
+                {members.map((member) => (
+                  <TableRow key={member.id}>
+                    <TableCell>
+                      {member.name}
+                      {member.id === user?.id && (
+                        <Chip label="Você" size="small" color="warning" sx={{ ml: 1 }} />
+                      )}
                     </TableCell>
+                    <TableCell>{member.email}</TableCell>
+                    <TableCell>{new Date(member.createdAt).toLocaleString('pt-BR')}</TableCell>
+                    {isCreator && (
+                      <TableCell align="right">
+                        {member.id !== user?.id && (
+                          <IconButton color="error" onClick={() => setMemberToRemove(member)} aria-label="remover membro">
+                            <IconUserMinus size={18} />
+                          </IconButton>
+                        )}
+                      </TableCell>
+                    )}
                   </TableRow>
-                ) : (
-                  members.map((member) => (
-                    <TableRow key={member.id}>
-                      <TableCell>{member.name}</TableCell>
-                      <TableCell>{member.email}</TableCell>
-                      <TableCell>{new Date(member.createdAt).toLocaleString('pt-BR')}</TableCell>
-                    </TableRow>
-                  ))
-                )}
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
         </MainCard>
       </Grid>
+
+      <Dialog open={!!memberToRemove} onClose={() => setMemberToRemove(null)} maxWidth="xs" fullWidth>
+        <DialogTitle>Remover membro</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Deseja realmente remover este membro da família?</DialogContentText>
+          {memberToRemove && (
+            <Typography sx={{ mt: 1, fontWeight: 600 }}>{memberToRemove.name}</Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setMemberToRemove(null)} disabled={submitting}>
+            Cancelar
+          </Button>
+          <Button color="error" variant="contained" onClick={handleRemoveMember} disabled={submitting}>
+            Remover da Família
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 }

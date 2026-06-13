@@ -9,5 +9,7 @@ router.use(authMiddleware);
 router.post('/create', controller.create);
 router.post('/join', controller.join);
 router.get('/me', controller.getMe);
+router.post('/rotate-token', controller.rotateToken);
+router.delete('/members/:memberId', controller.removeMember);
 
 module.exports = router;

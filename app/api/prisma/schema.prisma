@@ -8,12 +8,15 @@ datasource db {
 }
 
 model Family {
-    id          String   @id @default(uuid())
-    name        String?
-    inviteToken String   @unique
-    createdAt   DateTime @default(now())
+    id                   String   @id @default(uuid())
+    name                 String?
+    inviteToken          String   @unique
+    inviteTokenUpdatedAt DateTime @default(now())
+    createdById          String?
+    createdAt            DateTime @default(now())
 
-    users        User[]
+    createdBy    User?         @relation("FamilyCreator", fields: [createdById], references: [id])
+    users        User[]        @relation("FamilyMembers")
     categories   Category[]
     transactions Transaction[]
     accounts     Account[]
@@ -22,24 +25,22 @@ model Family {
 }
 
 model Bill {
-  id            String   @id @default(uuid())
-  description   String
-  amount        Decimal  @db.Decimal(10, 2)
+    id          String         @id @default(uuid())
+    description String
+    amount      Decimal        @db.Decimal(10, 2)
+    recurrence  RecurrenceType
+    dueDay      Int
+    createdAt   DateTime       @default(now())
+    userId      String
+    user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  recurrence    RecurrenceType
-
-  dueDay        Int
-
-  createdAt     DateTime @default(now())
-
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    @@map("bills")
 }
 
 enum RecurrenceType {
-  MONTHLY
-  YEARLY
-  ONCE
+    MONTHLY
+    YEARLY
+    ONCE
 }
 
 model User {
@@ -47,16 +48,31 @@ model User {
     name      String
     email     String   @unique
     password  String
+    avatarUrl String?
     familyId  String?
     createdAt DateTime @default(now())
 
-    family       Family?       @relation(fields: [familyId], references: [id])
-    categories   Category[]
-    transactions Transaction[]
-    accounts     Account[]
-    bills         Bill[]
+    family            Family?            @relation("FamilyMembers", fields: [familyId], references: [id])
+    createdFamilies   Family[]           @relation("FamilyCreator")
+    categories        Category[]
+    transactions      Transaction[]
+    accounts          Account[]
+    bills             Bill[]
+    notificationReads NotificationRead[]
 
     @@map("users")
+}
+
+model NotificationRead {
+    id              String   @id @default(uuid())
+    userId          String
+    notificationKey String
+    readAt          DateTime @default(now())
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, notificationKey])
+    @@map("notification_reads")
 }
 
 model Category {

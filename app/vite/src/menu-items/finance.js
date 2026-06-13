@@ -1,11 +1,12 @@
-import { IconCategory, IconDashboard, IconFileInvoice, IconReceipt, IconUsersGroup } from '@tabler/icons-react';
+import { IconCategory, IconDashboard, IconFileInvoice, IconReceipt, IconSettings, IconUsersGroup } from '@tabler/icons-react';
 
 const icons = {
   IconDashboard,
   IconReceipt,
   IconCategory,
   IconFileInvoice,
-  IconUsersGroup
+  IconUsersGroup,
+  IconSettings
 };
 
 const finance = {
@@ -52,6 +53,28 @@ const finance = {
       url: '/familia',
       icon: icons.IconUsersGroup,
       breadcrumbs: true
+    },
+    {
+      id: 'settings',
+      title: 'Configurações',
+      type: 'collapse',
+      icon: icons.IconSettings,
+      children: [
+        {
+          id: 'settings-profile',
+          title: 'Perfil',
+          type: 'item',
+          url: '/configuracoes/perfil',
+          breadcrumbs: true
+        },
+        {
+          id: 'settings-account',
+          title: 'Conta',
+          type: 'item',
+          url: '/configuracoes/conta',
+          breadcrumbs: true
+        }
+      ]
     }
   ]
 };

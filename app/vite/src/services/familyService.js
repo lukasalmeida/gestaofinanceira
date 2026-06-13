@@ -14,3 +14,13 @@ export async function joinFamily(token) {
   const response = await api.post('/families/join', { token: token.trim().toUpperCase() });
   return response.data;
 }
+
+export async function rotateFamilyToken() {
+  const response = await api.post('/families/rotate-token');
+  return response.data;
+}
+
+export async function removeFamilyMember(memberId) {
+  const response = await api.delete(`/families/members/${memberId}`);
+  return response.data;
+}
